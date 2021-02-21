@@ -8,7 +8,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int player = 1;
+  int _player = 1;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +27,7 @@ class _AppState extends State<App> {
                     height: 70,
                     child: Center(child: Text("Player 1")),
                     decoration: BoxDecoration(
-                      color: player == 1 ? Colors.red : Colors.red[200],
+                      color: _player == 1 ? Colors.red : Colors.red[200],
                     ),
                   ),
                 ),
@@ -36,7 +36,7 @@ class _AppState extends State<App> {
                     height: 70,
                     child: Center(child: Text("Player 2")),
                     decoration: BoxDecoration(
-                      color: player == 2 ? Colors.yellow : Colors.yellow[200],
+                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
                     ),
                   ),
                 ),
@@ -80,10 +80,10 @@ class _AppState extends State<App> {
     return GestureDetector(
       onTap: () {
         print("$colNum Tapped");
-        if (player == 1) {
-          player = 2;
+        if (_player == 1) {
+          _player = 2;
         } else {
-          player = 1;
+          _player = 1;
         }
         setState(() {});
       },
