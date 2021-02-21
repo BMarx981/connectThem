@@ -92,9 +92,11 @@ class _AppState extends State<App> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-              child: Container(
-            color: Color.fromRGBO(255, 255, 255, 0.0),
-          )),
+            child: Container(
+              child: Text(' '),
+            ),
+            backgroundColor: Colors.white,
+          ),
         ),
       ),
     );
