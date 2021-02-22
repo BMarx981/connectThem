@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connect_four/model/model.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -9,6 +10,9 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _player = 1;
+
+  Model model = Model();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +29,12 @@ class _AppState extends State<App> {
                 Expanded(
                   child: Container(
                     height: 70,
-                    child: Center(child: Text("Player 1")),
+                    child: Center(
+                        child: Text("Player 1",
+                            style: TextStyle(
+                                color: _player == 1
+                                    ? Colors.black
+                                    : Colors.grey))),
                     decoration: BoxDecoration(
                       color: _player == 1 ? Colors.red : Colors.red[200],
                     ),
@@ -34,7 +43,13 @@ class _AppState extends State<App> {
                 Expanded(
                   child: Container(
                     height: 70,
-                    child: Center(child: Text("Player 2")),
+                    child: Center(
+                      child: Text(
+                        "Player 2",
+                        style: TextStyle(
+                            color: _player == 2 ? Colors.black : Colors.grey),
+                      ),
+                    ),
                     decoration: BoxDecoration(
                       color: _player == 2 ? Colors.yellow : Colors.yellow[200],
                     ),
@@ -46,15 +61,7 @@ class _AppState extends State<App> {
             Row(
               //Main Row for game board
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                gameBoardColumn(number: 1),
-                gameBoardColumn(number: 2),
-                gameBoardColumn(number: 3),
-                gameBoardColumn(number: 4),
-                gameBoardColumn(number: 5),
-                gameBoardColumn(number: 6),
-                gameBoardColumn(number: 7),
-              ],
+              children: getGameBoardColumns(),
             ),
           ],
         ),
@@ -62,30 +69,42 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget gameBoardColumn({int number}) {
+  List<Widget> getGameBoardColumns() {
+    int i = 1;
+    List<Widget> returningColumn = List<Widget>();
+    model.colLists.forEach((column) {
+      returningColumn.add(gameBoardColumn(i++, column));
+    });
+    return returningColumn;
+  }
+
+  Widget gameBoardColumn(int number, List<ChipColor> chipColors) {
     return Column(
-      children: [
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-        columnButton(colNum: number),
-      ],
+      children: getBoardColumnButtons(number, chipColors),
     );
   }
 
-  Widget columnButton({int colNum}) {
+  List<Widget> getBoardColumnButtons(int number, List<ChipColor> colors) {
+    List<Widget> returningList = List<Widget>();
+    colors.forEach((color) {
+      returningList.add(columnButton(number, color));
+    });
+    return returningList;
+  }
+
+  Widget columnButton(int colNum, ChipColor color) {
     return GestureDetector(
       onTap: () {
-        print("$colNum Tapped");
+        print("$colNum Tapped by player $_player");
         if (_player == 1) {
           _player = 2;
         } else {
           _player = 1;
         }
-        setState(() {});
+        setState(() {
+          model.colLists[colNum - 1][model.findNextSlot(colNum - 1) - 1] =
+              _player == 2 ? ChipColor.red : ChipColor.yellow;
+        });
       },
       child: Container(
         decoration: BoxDecoration(color: Colors.blue[900]),
@@ -95,10 +114,26 @@ class _AppState extends State<App> {
             child: Container(
               child: Text(' '),
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: getChipColor(color),
           ),
         ),
       ),
     );
+  }
+
+  Color getChipColor(ChipColor color) {
+    switch (color) {
+      case ChipColor.white:
+        return Colors.white;
+        break;
+      case ChipColor.red:
+        return Colors.red;
+        break;
+      case ChipColor.yellow:
+        return Colors.yellow;
+        break;
+      default:
+        return Colors.white;
+    }
   }
 }
