@@ -78,9 +78,25 @@ class Model {
 
   void clear() {
     this.colLists.forEach((col) {
-      for(int i = 0; i < col.length; i++) {
+      for (int i = 0; i < col.length; i++) {
         col[i] = ChipColor.white;
       }
     });
+  }
+
+  bool isAWinner(int colNum, int index) {
+    ChipColor color = colLists[colNum][index];
+    int count = 0;
+    bool val;
+
+    if (colLists[colNum][index + 1] == ChipColor.white ||
+        colLists[colNum][index + 1] == null) {
+      val = false;
+    } else if (colLists[colNum][index + 1] == ChipColor.white ||
+        colLists[colNum][index - 1] == null) {
+      val = false;
+    }
+
+    return val;
   }
 }

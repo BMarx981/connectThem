@@ -102,22 +102,26 @@ class _AppState extends State<App> {
   Widget columnButton(int colNum, ChipColor color) {
     return GestureDetector(
       onTap: () {
-        // print("$colNum Tapped by player $_player");
+        int index = model.findNextSlot(colNum - 1) - 1;
+        if (index >= 0) {
+          setState(() {
+            model.colLists[colNum - 1][index] =
+                _player == 1 ? ChipColor.red : ChipColor.yellow;
+          });
+          model.isAWinner(colNum, index);
+        }
         if (_player == 1) {
           _player = 2;
         } else {
           _player = 1;
         }
-        setState(() {
-          model.colLists[colNum - 1][model.findNextSlot(colNum - 1) - 1] =
-              _player == 2 ? ChipColor.red : ChipColor.yellow;
-        });
       },
       child: Container(
         decoration: BoxDecoration(color: Colors.blue[900]),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
+            radius: 20.0,
             child: Container(
               child: Text(' '),
             ),
