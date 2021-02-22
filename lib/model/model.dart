@@ -75,4 +75,12 @@ class Model {
     });
     return index;
   }
+
+  void clear() {
+    this.colLists.forEach((col) {
+      for(int i = 0; i < col.length; i++) {
+        col[i] = ChipColor.white;
+      }
+    });
+  }
 }

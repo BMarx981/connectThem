@@ -21,7 +21,6 @@ class _AppState extends State<App> {
           title: Text("Connect them"),
         ),
         body: ListView(
-          //Main Column
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,6 +62,14 @@ class _AppState extends State<App> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: getGameBoardColumns(),
             ),
+            SizedBox(height: 170),
+            InkWell(
+                child: Center(
+                    child: Text('Clear', style: TextStyle(fontSize: 40))),
+                onTap: () {
+                  model.clear();
+                  setState(() {});
+                }),
           ],
         ),
       ),
@@ -95,7 +102,7 @@ class _AppState extends State<App> {
   Widget columnButton(int colNum, ChipColor color) {
     return GestureDetector(
       onTap: () {
-        print("$colNum Tapped by player $_player");
+        // print("$colNum Tapped by player $_player");
         if (_player == 1) {
           _player = 2;
         } else {
