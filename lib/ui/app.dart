@@ -68,6 +68,7 @@ class _AppState extends State<App> {
                     child: Text('Clear', style: TextStyle(fontSize: 40))),
                 onTap: () {
                   model.clear();
+                  _player = 1;
                   setState(() {});
                 }),
           ],
@@ -104,16 +105,16 @@ class _AppState extends State<App> {
       onTap: () {
         int index = model.findNextSlot(colNum - 1) - 1;
         if (index >= 0) {
+          if (_player == 1) {
+            _player = 2;
+          } else {
+            _player = 1;
+          }
           setState(() {
             model.colLists[colNum - 1][index] =
-                _player == 1 ? ChipColor.red : ChipColor.yellow;
+                _player == 1 ? ChipColor.yellow : ChipColor.red;
           });
-          model.isAWinner(colNum, index);
-        }
-        if (_player == 1) {
-          _player = 2;
-        } else {
-          _player = 1;
+          print(model.isAWinner(colNum, index));
         }
       },
       child: Container(
