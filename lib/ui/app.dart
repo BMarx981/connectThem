@@ -8,16 +8,29 @@ class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with SingleTickerProviderStateMixin {
   int _player = 1;
   double _opacity = 0.0;
-  BuildContext ctx;
 
   Model model = Model();
+  AnimationController aniController;
+
+  @override
+  void initState() {
+    super.initState();
+    aniController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+      lowerBound: 0,
+      upperBound: 100,
+    );
+    aniController.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    ctx = context;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -134,6 +147,7 @@ class _AppState extends State<App> {
             model.colLists[colNum - 1][index] =
                 _player == 1 ? ChipColor.yellow : ChipColor.red;
           });
+          // aniController.forward();
           if (model.isAWinner(colNum, index)) {
             if (_player == 1) {
               _player = 2;
@@ -149,16 +163,27 @@ class _AppState extends State<App> {
         decoration: BoxDecoration(color: Colors.blue[900]),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            radius: 15.0,
+          child: Container(
+            margin: EdgeInsets.only(top: aniController.value),
             child: Container(
-              child: Text(' '),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: getChipColor(color),
+              ),
+              child: Container(
+                child: Text(' '),
+              ),
+              width: 30.0,
+              height: 30.0,
             ),
-            backgroundColor: getChipColor(color),
           ),
         ),
       ),
     );
+  }
+
+  void dropAChip(int colNum, int index) {
+    List<ChipColor> list = model.colLists[colNum];
   }
 
   Color getChipColor(ChipColor color) {

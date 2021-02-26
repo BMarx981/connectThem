@@ -89,10 +89,11 @@ class Model {
     int width = colLists.length - 1;
     int height = colLists[0].length;
     bool val = false;
+    print("$width, $mainColor");
 
     //Vertical Check the grid
-    for (int j = 0; j < width - 3; j++) {
-      for (int i = 0; i < height; i++) {
+    for (int j = 0; j < height - 3; j++) {
+      for (int i = 0; i <= width; i++) {
         if (colLists[i][j] == mainColor &&
             colLists[i][j + 1] == mainColor &&
             colLists[i][j + 2] == mainColor &&
@@ -103,7 +104,7 @@ class Model {
     }
 
     //Horizontal check
-    for (int i = 0; i < width - 3; i++) {
+    for (int i = 0; i <= width - 3; i++) {
       for (int j = 0; j < height; j++) {
         if (colLists[i][j] == mainColor &&
             colLists[i + 1][j] == mainColor &&
@@ -115,8 +116,8 @@ class Model {
     }
 
     //ascending diagonal check
-    for (int i = 3; i < colLists.length - 1; i++) {
-      for (int j = 0; j < colLists[0].length - 3; j++) {
+    for (int i = 3; i <= width; i++) {
+      for (int j = 0; j < height - 3; j++) {
         if (colLists[i][j] == mainColor &&
             colLists[i - 1][j + 1] == mainColor &&
             colLists[i - 2][j + 2] == mainColor &&
@@ -126,8 +127,8 @@ class Model {
       }
     }
     //descending diagonal check
-    for (int i = 3; i < colLists.length - 1; i++) {
-      for (int j = 3; j < colLists[0].length - 1; j++) {
+    for (int i = 3; i <= width; i++) {
+      for (int j = 3; j < height; j++) {
         if (colLists[i][j] == mainColor &&
             colLists[i - 1][j - 1] == mainColor &&
             colLists[i - 2][j - 2] == mainColor &&
