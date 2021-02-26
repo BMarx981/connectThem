@@ -88,14 +88,11 @@ class Model {
     ChipColor mainColor = colLists[colNum - 1][index];
     int width = colLists.length - 1;
     int height = colLists[0].length;
-    print('$mainColor colNum: $colNum index: $index $width, $height');
     bool val = false;
 
     //Vertical Check the grid
     for (int j = 0; j < width - 3; j++) {
       for (int i = 0; i < height; i++) {
-        print(
-            'Horizontal i = $i : j = $j ${colLists[i][j]} ${colLists[i][j + 1]}  ${colLists[i][j + 2]} ${colLists[i][j + 3]}');
         if (colLists[i][j] == mainColor &&
             colLists[i][j + 1] == mainColor &&
             colLists[i][j + 2] == mainColor &&
@@ -108,8 +105,6 @@ class Model {
     //Horizontal check
     for (int i = 0; i < width - 3; i++) {
       for (int j = 0; j < height; j++) {
-        print(
-            'Vertical i = $i : j = $j ${colLists[i][j]} ${colLists[i + 1][j]} ${colLists[i + 2][j]} ${colLists[i + 3][j]}');
         if (colLists[i][j] == mainColor &&
             colLists[i + 1][j] == mainColor &&
             colLists[i + 2][j] == mainColor &&

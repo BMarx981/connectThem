@@ -10,11 +10,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _player = 1;
+  double _opacity = 0.0;
+  BuildContext ctx;
 
   Model model = Model();
 
   @override
   Widget build(BuildContext context) {
+    ctx = context;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -62,13 +65,30 @@ class _AppState extends State<App> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: getGameBoardColumns(),
             ),
-            SizedBox(height: 170),
+            AnimatedOpacity(
+                duration: Duration(seconds: 1),
+                opacity: _opacity,
+                child: Center(
+                  child: Container(
+                    height: 100,
+                    child: Text(
+                      'Player $_player wins',
+                      style: TextStyle(
+                        fontSize: 50.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                )),
+            SizedBox(height: 70),
             InkWell(
                 child: Center(
                     child: Text('Clear', style: TextStyle(fontSize: 40))),
                 onTap: () {
                   model.clear();
                   _player = 1;
+                  _opacity = 0.0;
                   setState(() {});
                 }),
           ],
@@ -114,7 +134,15 @@ class _AppState extends State<App> {
             model.colLists[colNum - 1][index] =
                 _player == 1 ? ChipColor.yellow : ChipColor.red;
           });
-          print(model.isAWinner(colNum, index));
+          if (model.isAWinner(colNum, index)) {
+            if (_player == 1) {
+              _player = 2;
+            } else {
+              _player = 1;
+            }
+            setState(() {});
+            _opacity = 1.0;
+          }
         }
       },
       child: Container(
@@ -122,7 +150,7 @@ class _AppState extends State<App> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            radius: 20.0,
+            radius: 15.0,
             child: Container(
               child: Text(' '),
             ),
