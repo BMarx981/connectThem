@@ -14,6 +14,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   Model model = Model();
   AnimationController aniController;
+  Animation<double> _animation;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       lowerBound: 0,
       upperBound: 100,
     );
+    _animation = Tween<double>(begin: 0.0, end: 100.0).animate(aniController);
     aniController.addListener(() {
       setState(() {});
     });
@@ -94,10 +96,10 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                     ),
                   ),
                 )),
-            SizedBox(height: 70),
+            SizedBox(height: 40),
             InkWell(
                 child: Center(
-                    child: Text('Clear', style: TextStyle(fontSize: 40))),
+                    child: Text('Clear', style: TextStyle(fontSize: 30))),
                 onTap: () {
                   model.clear();
                   _player = 1;
@@ -170,9 +172,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 shape: BoxShape.circle,
                 color: getChipColor(color),
               ),
-              child: Container(
-                child: Text(' '),
-              ),
+              child: Text(' '),
               width: 30.0,
               height: 30.0,
             ),
@@ -180,10 +180,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-  }
-
-  void dropAChip(int colNum, int index) {
-    List<ChipColor> list = model.colLists[colNum];
   }
 
   Color getChipColor(ChipColor color) {
