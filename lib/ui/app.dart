@@ -139,6 +139,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return GestureDetector(
       onTap: () {
         int index = model.findNextSlot(colNum - 1) - 1;
+        print("Tapped button");
         if (index >= 0) {
           if (_player == 1) {
             _player = 2;
@@ -162,24 +163,15 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         }
       },
       child: Container(
-        decoration: BoxDecoration(color: Colors.blue[900]),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            margin: EdgeInsets.only(top: aniController.value),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: getChipColor(color),
-              ),
-              child: Text(' '),
-              width: 30.0,
-              height: 30.0,
-            ),
-          ),
-        ),
+        height: 50,
+        width: 50,
+        child: getBlueRect(),
       ),
     );
+  }
+
+  CustomPaint getBlueRect() {
+    return CustomPaint(painter: HolePainter());
   }
 
   Color getChipColor(ChipColor color) {
@@ -196,5 +188,34 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       default:
         return Colors.white;
     }
+  }
+}
+
+class HolePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.blue;
+
+    canvas.drawPath(
+        Path.combine(
+          PathOperation.difference,
+          Path()
+            ..addRect(Rect.fromCenter(
+              // Offset(0.5, 0.5), Offset(0.5, 0.5),
+              center: Offset(size.width / 2, size.height / 2),
+              width: 50,
+              height: 50,
+            )),
+          Path()
+            ..addOval(Rect.fromCircle(
+                center: Offset(size.width / 2, size.height / 2), radius: 15))
+            ..close(),
+        ),
+        paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
