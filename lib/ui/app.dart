@@ -12,24 +12,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   int _player = 1;
   double _opacity = 0.0;
 
-  Model model = Model();
-  AnimationController aniController;
-  Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    aniController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-      lowerBound: 0,
-      upperBound: 100,
-    );
-    _animation = Tween<double>(begin: 0.0, end: 100.0).animate(aniController);
-    aniController.addListener(() {
-      setState(() {});
-    });
-  }
+  Model _model = Model();
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +58,17 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
               ],
             ),
             SizedBox(height: 50),
-            Row(
-              //Main Row for game board
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: getGameBoardColumns(),
-            ),
+            Stack(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: getBackChips(),
+              ),
+              Row(
+                //Main Row for game board
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: getGameBoardColumns(),
+              ),
+            ]),
             AnimatedOpacity(
                 duration: Duration(seconds: 1),
                 opacity: _opacity,
@@ -101,7 +90,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 child: Center(
                     child: Text('Clear', style: TextStyle(fontSize: 30))),
                 onTap: () {
-                  model.clear();
+                  _model.clear();
                   _player = 1;
                   _opacity = 0.0;
                   setState(() {});
@@ -112,10 +101,36 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     );
   }
 
+  List<Widget> getBackChips() {
+    List<Column> chipCol = List<Column>();
+    for (int i = 0; i < _model.colLists.length; i++) {
+      List<Widget> colors = List<Widget>();
+      for (int j = 0; j < _model.colLists[i].length; j++) {
+        colors.add(getChipPiece(_model.colLists[i][j]));
+      }
+      print(_model.colLists[i]);
+      chipCol.add(Column(
+        children: colors,
+      ));
+    }
+    return chipCol;
+  }
+
+  Widget getChipPiece(ChipColor color) {
+    return Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: getChipColor(color),
+        ),
+        child: Text(" "));
+  }
+
   List<Widget> getGameBoardColumns() {
     int i = 1;
     List<Widget> returningColumn = List<Widget>();
-    model.colLists.forEach((column) {
+    _model.colLists.forEach((column) {
       returningColumn.add(gameBoardColumn(i++, column));
     });
     return returningColumn;
@@ -138,7 +153,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   Widget columnButton(int colNum, ChipColor color) {
     return GestureDetector(
       onTap: () {
-        int index = model.findNextSlot(colNum - 1) - 1;
+        int index = _model.findNextSlot(colNum - 1) - 1;
         print("Tapped button");
         if (index >= 0) {
           if (_player == 1) {
@@ -147,11 +162,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             _player = 1;
           }
           setState(() {
-            model.colLists[colNum - 1][index] =
+            _model.colLists[colNum - 1][index] =
                 _player == 1 ? ChipColor.yellow : ChipColor.red;
           });
           // aniController.forward();
-          if (model.isAWinner(colNum, index)) {
+          if (_model.isAWinner(colNum, index)) {
             if (_player == 1) {
               _player = 2;
             } else {
