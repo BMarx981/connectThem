@@ -13,6 +13,43 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   double _opacity = 0.0;
 
   Model _model = Model();
+  AnimationController _controller;
+  Animation<Offset> _offsetAni;
+
+  initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _offsetAni = Tween<Offset>(
+      begin: Offset(0, -10),
+      end: Offset(0, 0),
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.bounceOut,
+      ),
+    );
+  }
+
+  @override
+  void didUpdateWidget(App oldWidget) {
+    // if (_controller.status == AnimationStatus.completed) {
+    //   print(_controller.status);
+    //   _controller.reset();
+    // }
+    print("What?");
+    _controller.reset();
+    _controller.forward();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +97,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             SizedBox(height: 50),
             Stack(children: [
               Row(
+                //Chips colors layer
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: getBackChips(),
               ),
@@ -106,9 +144,13 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     for (int i = 0; i < _model.colLists.length; i++) {
       List<Widget> colors = List<Widget>();
       for (int j = 0; j < _model.colLists[i].length; j++) {
-        colors.add(getChipPiece(_model.colLists[i][j]));
+        colors.add(
+          SlideTransition(
+            position: _offsetAni,
+            child: getChipPiece(_model.colLists[i][j]),
+          ),
+        );
       }
-      print(_model.colLists[i]);
       chipCol.add(Column(
         children: colors,
       ));
@@ -118,13 +160,14 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   Widget getChipPiece(ChipColor color) {
     return Container(
-        height: 50,
-        width: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: getChipColor(color),
-        ),
-        child: Text(" "));
+      height: 50,
+      width: 50,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color:
+            color == ChipColor.white ? Colors.transparent : getChipColor(color),
+      ),
+    );
   }
 
   List<Widget> getGameBoardColumns() {
@@ -164,8 +207,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           setState(() {
             _model.colLists[colNum - 1][index] =
                 _player == 1 ? ChipColor.yellow : ChipColor.red;
+            _controller.forward();
           });
-          // aniController.forward();
           if (_model.isAWinner(colNum, index)) {
             if (_player == 1) {
               _player = 2;
