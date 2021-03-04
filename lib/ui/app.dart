@@ -23,7 +23,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       vsync: this,
     );
     _offsetAni = Tween<Offset>(
-      begin: Offset(0, -10),
+      begin: Offset(0, -7),
       end: Offset(0, 0),
     ).animate(
       CurvedAnimation(
@@ -31,18 +31,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         curve: Curves.bounceOut,
       ),
     );
-  }
-
-  @override
-  void didUpdateWidget(App oldWidget) {
-    // if (_controller.status == AnimationStatus.completed) {
-    //   print(_controller.status);
-    //   _controller.reset();
-    // }
-    print("What?");
-    _controller.reset();
-    _controller.forward();
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -145,10 +133,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       List<Widget> colors = List<Widget>();
       for (int j = 0; j < _model.colLists[i].length; j++) {
         colors.add(
-          SlideTransition(
-            position: _offsetAni,
-            child: getChipPiece(_model.colLists[i][j]),
-          ),
+          getChipPiece(_model.colLists[i][j]),
         );
       }
       chipCol.add(Column(
@@ -159,13 +144,17 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   }
 
   Widget getChipPiece(ChipColor color) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color:
-            color == ChipColor.white ? Colors.transparent : getChipColor(color),
+    return SlideTransition(
+      position: _offsetAni,
+      child: Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color == ChipColor.white
+              ? Colors.transparent
+              : getChipColor(color),
+        ),
       ),
     );
   }
@@ -205,6 +194,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             _player = 1;
           }
           setState(() {
+            _controller.reset();
             _model.colLists[colNum - 1][index] =
                 _player == 1 ? ChipColor.yellow : ChipColor.red;
             _controller.forward();
