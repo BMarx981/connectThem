@@ -187,6 +187,10 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         height: 50,
         width: 50,
         decoration: BoxDecoration(
+          border: Border.all(
+              color: color == Colors.transparent
+                  ? Colors.transparent
+                  : Colors.black),
           shape: BoxShape.circle,
           color: color == Colors.white ? Colors.transparent : color,
         ),
