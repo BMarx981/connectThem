@@ -11,6 +11,8 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   int _player = 1;
   double _opacity = 0.0;
+  int _colNum = 0;
+  int _index = 0;
 
   Model _model = Model();
   AnimationController _controller;
@@ -87,7 +89,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
               Row(
                 //Chips colors layer
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: getBackChips(),
+                children: getDropChips(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: getColorChipContainers(),
               ),
               Row(
                 //Main Row for game board
@@ -127,13 +133,44 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     );
   }
 
-  List<Widget> getBackChips() {
+  List<Widget> getColorChipContainers() {
+    List<Column> col = List<Column>();
+    for (int i = 0; i < _model.colLists.length; i++) {
+      List<Widget> colors = List<Widget>();
+      for (int j = 0; j < _model.colLists[i].length; j++) {
+        colors.add(getChipPiece(_model.colLists[i][j]));
+      }
+      col.add(Column(
+        children: colors,
+      ));
+    }
+    return col;
+  }
+
+  Widget getChipPiece(ChipColor color) {
+    return AnimatedOpacity(
+      duration: Duration(milliseconds: 1500),
+      opacity: color == ChipColor.white ? 0.0 : 1.0,
+      curve: Curves.easeInToLinear,
+      child: Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          color: getChipColor(color),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getDropChips() {
     List<Column> chipCol = List<Column>();
     for (int i = 0; i < _model.colLists.length; i++) {
       List<Widget> colors = List<Widget>();
       for (int j = 0; j < _model.colLists[i].length; j++) {
         colors.add(
-          getChipPiece(_model.colLists[i][j]),
+          getDropPiece(_colNum == i && _index == j
+              ? getChipColor(_model.colLists[i][j])
+              : Colors.transparent),
         );
       }
       chipCol.add(Column(
@@ -143,7 +180,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return chipCol;
   }
 
-  Widget getChipPiece(ChipColor color) {
+  Widget getDropPiece(Color color) {
     return SlideTransition(
       position: _offsetAni,
       child: Container(
@@ -151,9 +188,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         width: 50,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: color == ChipColor.white
-              ? Colors.transparent
-              : getChipColor(color),
+          color: color == Colors.white ? Colors.transparent : color,
         ),
       ),
     );
@@ -186,6 +221,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return GestureDetector(
       onTap: () {
         int index = _model.findNextSlot(colNum - 1) - 1;
+        _colNum = colNum - 1;
+        _index = index;
         print("Tapped button");
         if (index >= 0) {
           if (_player == 1) {
