@@ -223,7 +223,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         int index = _model.findNextSlot(colNum - 1) - 1;
         _colNum = colNum - 1;
         _index = index;
-        print("Tapped button");
         if (index >= 0) {
           if (_player == 1) {
             _player = 2;

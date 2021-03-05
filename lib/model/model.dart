@@ -89,7 +89,6 @@ class Model {
     int width = colLists.length - 1;
     int height = colLists[0].length;
     bool val = false;
-    // print("$width, $mainColor");
 
     //Vertical Check the grid
     for (int j = 0; j < height - 3; j++) {
