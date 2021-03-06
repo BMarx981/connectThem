@@ -6,7 +6,7 @@ void main() {
   runApp(
     MaterialApp(
       routes: {
-        '/': (context) => App(),
+        '/': (context) => Connect(),
         '/tic': (context) => Tic(),
       },
       initialRoute: '/',

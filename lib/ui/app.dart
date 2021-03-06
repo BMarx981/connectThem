@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:connect_four/model/model.dart';
 import 'tic.dart';
 
-class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+class Connect extends StatefulWidget {
+  const Connect({Key key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  _ConnectState createState() => _ConnectState();
 }
 
-class _AppState extends State<App> with SingleTickerProviderStateMixin {
+class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
   int _player = 1;
   double _opacity = 0.0;
   int _colNum = 0;
