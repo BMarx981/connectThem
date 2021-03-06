@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connect_four/model/model.dart';
+import 'tic.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -43,92 +44,123 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Connect them"),
-        ),
-        body: ListView(
+    return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 70,
-                    child: Center(
-                        child: Text("Player 1",
-                            style: TextStyle(
-                                color: _player == 1
-                                    ? Colors.black
-                                    : Colors.grey))),
-                    decoration: BoxDecoration(
-                      color: _player == 1 ? Colors.red : Colors.red[200],
+            DrawerHeader(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                ),
+                child: Center(
+                  child: Text(
+                    'Select a game to play',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    height: 70,
-                    child: Center(
-                      child: Text(
-                        "Player 2",
-                        style: TextStyle(
-                            color: _player == 2 ? Colors.black : Colors.grey),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-            SizedBox(height: 50),
-            Stack(children: [
-              Row(
-                //Chips colors layer
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: getDropChips(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: getColorChipContainers(),
-              ),
-              Row(
-                //Main Row for game board
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: getGameBoardColumns(),
-              ),
-            ]),
-            AnimatedOpacity(
-                duration: Duration(seconds: 1),
-                opacity: _opacity,
-                child: Center(
-                  child: Container(
-                    height: 100,
-                    child: Text(
-                      'Player $_player wins',
-                      style: TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                )),
-            SizedBox(height: 40),
-            InkWell(
-                child: Center(
-                    child: Text('Clear', style: TextStyle(fontSize: 30))),
+            ListTile(
+                title: Text('Connect Them'),
                 onTap: () {
-                  _model.clear();
-                  _player = 1;
-                  _opacity = 0.0;
-                  setState(() {});
+                  Navigator.pushNamed(context, '/');
+                }),
+            ListTile(
+                title: Text('Tic Tack Three'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/tic');
                 }),
           ],
         ),
+      ),
+      appBar: AppBar(
+        shape: BeveledRectangleBorder(),
+        title: Text("Connect them"),
+      ),
+      body: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Container(
+                  height: 70,
+                  child: Center(
+                      child: Text("Player 1",
+                          style: TextStyle(
+                              color:
+                                  _player == 1 ? Colors.black : Colors.grey))),
+                  decoration: BoxDecoration(
+                    color: _player == 1 ? Colors.red : Colors.red[200],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  height: 70,
+                  child: Center(
+                    child: Text(
+                      "Player 2",
+                      style: TextStyle(
+                          color: _player == 2 ? Colors.black : Colors.grey),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 50),
+          Stack(children: [
+            Row(
+              //Chips colors layer
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getDropChips(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getColorChipContainers(),
+            ),
+            Row(
+              //Main Row for game board
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getGameBoardColumns(),
+            ),
+          ]),
+          AnimatedOpacity(
+              duration: Duration(seconds: 1),
+              opacity: _opacity,
+              child: Center(
+                child: Container(
+                  height: 100,
+                  child: Text(
+                    'Player $_player wins',
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              )),
+          SizedBox(height: 40),
+          InkWell(
+              child:
+                  Center(child: Text('Clear', style: TextStyle(fontSize: 30))),
+              onTap: () {
+                _model.clear();
+                _player = 1;
+                _opacity = 0.0;
+                setState(() {});
+              }),
+        ],
       ),
     );
   }
@@ -188,6 +220,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         width: 50,
         decoration: BoxDecoration(
           border: Border.all(
+              width: 3,
               color: color == Colors.transparent
                   ? Colors.transparent
                   : Colors.black),
