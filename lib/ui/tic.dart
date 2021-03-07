@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connect_four/model/ticModel.dart';
 
 class Tic extends StatefulWidget {
   Tic({Key key}) : super(key: key);
@@ -9,6 +10,9 @@ class Tic extends StatefulWidget {
 
 class _TicState extends State<Tic> {
   int _player = 1;
+  double _opacity = 0.0;
+
+  TicModel _model = TicModel();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +56,7 @@ class _TicState extends State<Tic> {
       ),
       body: Column(
         children: [
+          //Player row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -87,6 +92,7 @@ class _TicState extends State<Tic> {
               ),
             ],
           ),
+          //TicTacToe board
           Expanded(
             child: Container(
               padding: EdgeInsets.all(18),
@@ -95,9 +101,11 @@ class _TicState extends State<Tic> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print('Cell 1 tapped');
+                      cellSelected(0, 0);
                     },
                     child: Container(
+                      child: buildContainer(
+                          _model.grid[0][0] > 0 ? _model.grid[0][0] : 0),
                       decoration: BoxDecoration(
                         border: Border(
                           left: BorderSide(
@@ -118,22 +126,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 2 tapped');
+                      cellSelected(0, 1);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.black,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.black,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[0][1] > 0 ? _model.grid[0][1] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.black,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -141,22 +153,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 3 tapped');
+                      cellSelected(0, 2);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.black,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[0][2] > 0 ? _model.grid[0][2] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -164,22 +180,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 4 tapped');
+                      cellSelected(1, 0);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.black,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.black,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[1][0] > 0 ? _model.grid[1][0] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.black,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -187,22 +207,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 5 tapped');
+                      cellSelected(1, 1);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.black,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.black,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[1][1] > 0 ? _model.grid[1][1] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.black,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -210,22 +234,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 6 tapped');
+                      cellSelected(1, 2);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.black,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[1][2] > 0 ? _model.grid[1][2] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -233,22 +261,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 7 tapped');
+                      cellSelected(2, 0);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.black,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.transparent,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[2][0] > 0 ? _model.grid[2][0] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.black,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.transparent,
+                            ),
                           ),
                         ),
                       ),
@@ -256,22 +288,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 8 tapped');
+                      cellSelected(2, 1);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.black,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.transparent,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[2][1] > 0 ? _model.grid[2][1] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.black,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.transparent,
+                            ),
                           ),
                         ),
                       ),
@@ -279,22 +315,26 @@ class _TicState extends State<Tic> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Cell 9 tapped');
+                      cellSelected(2, 2);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          right: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          top: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          bottom: BorderSide(
-                            color: Colors.transparent,
+                      child: Container(
+                        child: buildContainer(
+                            _model.grid[2][2] > 0 ? _model.grid[2][2] : 0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            right: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            top: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            bottom: BorderSide(
+                              color: Colors.transparent,
+                            ),
                           ),
                         ),
                       ),
@@ -304,8 +344,43 @@ class _TicState extends State<Tic> {
               ),
             ),
           ),
+          SizedBox(height: 20),
+          AnimatedOpacity(
+            opacity: _opacity,
+            duration: Duration(seconds: 1),
+            child: Container(
+              child: Text('Player $_player wins'),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  void cellSelected(int row, int col) {
+    _model.grid[row][col] = _player;
+    setState(() {});
+    changePlayer(_player);
+  }
+
+  void changePlayer(int selection) {
+    if (selection == 1) {
+      _player = 2;
+    } else {
+      _player = 1;
+    }
+  }
+
+  Widget buildContainer(int op) {
+    if (op == 0) {
+      return Container(child: Text(' '));
+    }
+    return AnimatedOpacity(
+      duration: Duration(
+        milliseconds: 500,
+      ),
+      opacity: 1,
+      child: Center(child: Container(child: op == 1 ? Text("X") : Text("O"))),
     );
   }
 }

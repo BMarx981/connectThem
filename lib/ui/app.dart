@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:connect_four/model/model.dart';
-import 'tic.dart';
 
 class Connect extends StatefulWidget {
   const Connect({Key key}) : super(key: key);
