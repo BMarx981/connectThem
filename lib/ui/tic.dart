@@ -47,6 +47,11 @@ class _TicState extends State<Tic> {
                 onTap: () {
                   Navigator.pushNamed(context, '/tic');
                 }),
+            ListTile(
+                title: Text('Checkout checkers'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/checkers');
+                }),
           ],
         ),
       ),

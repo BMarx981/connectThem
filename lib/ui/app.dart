@@ -74,6 +74,11 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
                 onTap: () {
                   Navigator.pushNamed(context, '/tic');
                 }),
+            ListTile(
+                title: Text('Checkout checkers'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/checkers');
+                }),
           ],
         ),
       ),
@@ -92,7 +97,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
                   child: Center(
                       child: Text("Player 1",
                           style: TextStyle(
-                            fontSize: 24,
+                              fontSize: 24,
                               color:
                                   _player == 1 ? Colors.black : Colors.grey))),
                   decoration: BoxDecoration(
@@ -107,7 +112,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
                     child: Text(
                       "Player 2",
                       style: TextStyle(
-                        fontSize: 24,
+                          fontSize: 24,
                           color: _player == 2 ? Colors.black : Colors.grey),
                     ),
                   ),
