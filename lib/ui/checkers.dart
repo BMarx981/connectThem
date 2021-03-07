@@ -6,6 +6,8 @@ class Checkers extends StatefulWidget {
 }
 
 class _CheckersState extends State<Checkers> {
+  int _player = 1;
+  double _opacity = 0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +52,61 @@ class _CheckersState extends State<Checkers> {
       appBar: AppBar(
         shape: BeveledRectangleBorder(),
         title: Text("Chick Check"),
+        bottomOpacity: 0.1,
       ),
-      body: Container(
-        child: ,
+      body: Center(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 70,
+                    child: Center(
+                        child: Text("Player 1",
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: _player == 1
+                                    ? Colors.black
+                                    : Colors.grey))),
+                    decoration: BoxDecoration(
+                      color: _player == 1 ? Colors.red : Colors.red[200],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 70,
+                    child: Center(
+                      child: Text(
+                        "Player 2",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: _player == 2 ? Colors.black : Colors.grey),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              child: Text('Checkers'),
+            ),
+            InkWell(
+                child: Center(
+                    child: Text('Clear', style: TextStyle(fontSize: 30))),
+                onTap: () {
+                  // _model.clear();
+                  _player = 1;
+                  _opacity = 0.0;
+                  setState(() {});
+                }),
+          ],
+        ),
       ),
     );
   }
