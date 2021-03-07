@@ -63,30 +63,30 @@ class _TicState extends State<Tic> {
               Expanded(
                 child: Container(
                   height: 70,
-                  color: Colors.red,
                   child: Center(
-                    child: Text(
-                      'Player 1',
-                      style: TextStyle(
-                        color: _player == 1 ? Colors.black : Colors.grey,
-                        fontSize: 18,
-                      ),
-                    ),
+                      child: Text("Player 1",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color:
+                                  _player == 1 ? Colors.black : Colors.grey))),
+                  decoration: BoxDecoration(
+                    color: _player == 1 ? Colors.red : Colors.red[200],
                   ),
                 ),
               ),
               Expanded(
                 child: Container(
                   height: 70,
-                  color: Colors.yellow,
                   child: Center(
                     child: Text(
-                      'Player 2',
+                      "Player 2",
                       style: TextStyle(
-                        color: _player == 2 ? Colors.black : Colors.grey,
-                        fontSize: 18,
-                      ),
+                          fontSize: 24,
+                          color: _player == 2 ? Colors.black : Colors.grey),
                     ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: _player == 2 ? Colors.yellow : Colors.yellow[200],
                   ),
                 ),
               ),
@@ -344,14 +344,38 @@ class _TicState extends State<Tic> {
               ),
             ),
           ),
-          SizedBox(height: 20),
           AnimatedOpacity(
             opacity: _opacity,
             duration: Duration(seconds: 1),
             child: Container(
-              child: Text('Player $_player wins'),
+              child: Text(
+                'Player $_player wins',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50,
+                ),
+              ),
             ),
           ),
+          InkWell(
+            onTap: () {
+              _opacity = 0;
+              _model.grid.forEach((row) {
+                for (int i = 0; i < row.length; i++) {
+                  row[i] = 0;
+                }
+              });
+              _player = 1;
+              setState(() {});
+            },
+            child: Text(
+              'Clear',
+              style: TextStyle(
+                fontSize: 30,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -359,8 +383,14 @@ class _TicState extends State<Tic> {
 
   void cellSelected(int row, int col) {
     _model.grid[row][col] = _player;
-    setState(() {});
-    changePlayer(_player);
+    print(_model.isWinner(_player));
+    if (_model.isWinner(_player)) {
+      _opacity = 1;
+      setState(() {});
+    } else {
+      setState(() {});
+      changePlayer(_player);
+    }
   }
 
   void changePlayer(int selection) {
@@ -380,7 +410,19 @@ class _TicState extends State<Tic> {
         milliseconds: 500,
       ),
       opacity: 1,
-      child: Center(child: Container(child: op == 1 ? Text("X") : Text("O"))),
+      child: Center(
+        child: Container(
+          child: op == 1
+              ? Text(
+                  "X",
+                  style: TextStyle(fontSize: 32),
+                )
+              : Text(
+                  "O",
+                  style: TextStyle(fontSize: 32),
+                ),
+        ),
+      ),
     );
   }
 }
