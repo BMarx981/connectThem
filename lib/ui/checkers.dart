@@ -96,7 +96,7 @@ class _CheckersState extends State<Checkers> {
             Container(
               child: Stack(
                 children: [
-                  Align(alignment: Alignment.center, child: buildBoard()),
+                  buildBoard(),
                 ],
               ),
             ),
