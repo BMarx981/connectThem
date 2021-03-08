@@ -94,7 +94,11 @@ class _CheckersState extends State<Checkers> {
               ],
             ),
             Container(
-              child: Text('Checkers'),
+              child: Stack(
+                children: [
+                  Align(alignment: Alignment.center, child: buildBoard()),
+                ],
+              ),
             ),
             InkWell(
                 child: Center(
@@ -109,5 +113,59 @@ class _CheckersState extends State<Checkers> {
         ),
       ),
     );
+  }
+
+  Widget buildBoard() {
+    Color off = Color(0xFFCCCCCC);
+    List<Widget> colList = List<Widget>();
+    for (int i = 0; i < 8; i++) {
+      List<Widget> list = List<Widget>();
+      Color first = Colors.black;
+      Color second = off;
+      if (i % 2 != 0) {
+        first = off;
+        second = Colors.black;
+      }
+      for (int j = 0; j < 8; j++) {
+        list.add(
+          GestureDetector(
+            onTap: () {
+              print('Row $i, Column $j');
+            },
+            child: Container(
+              height: 40,
+              width: 40,
+              color: j % 2 != 0 ? first : second,
+            ),
+          ),
+        );
+      }
+      colList.add(Row(
+        children: list,
+      ));
+    }
+    return Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0x99222222),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 10,
+                  color: Color(0x99222222),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: colList,
+              ),
+            ),
+          ],
+        ));
   }
 }
