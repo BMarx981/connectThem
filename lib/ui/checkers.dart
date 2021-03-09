@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connect_four/model/check_model.dart';
 
 class Checkers extends StatefulWidget {
   @override
@@ -8,6 +9,9 @@ class Checkers extends StatefulWidget {
 class _CheckersState extends State<Checkers> {
   int _player = 1;
   double _opacity = 0.0;
+
+  CheckModel _model = CheckModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,6 +133,15 @@ class _CheckersState extends State<Checkers> {
       for (int j = 0; j < 8; j++) {
         list.add(
           GestureDetector(
+            onPanStart: (details) {
+              print(details);
+            },
+            onPanUpdate: (details) {
+              print(details);
+            },
+            onPanEnd: (details) {
+              print(details);
+            },
             onTap: () {
               print('Row $i, Column $j');
             },
@@ -145,27 +158,28 @@ class _CheckersState extends State<Checkers> {
       ));
     }
     return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Color(0x99222222),
-          ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Color(0x99222222),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 10,
-                  color: Color(0x99222222),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: colList,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 10,
+                color: Color(0x99222222),
               ),
             ),
-          ],
-        ));
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: colList,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
