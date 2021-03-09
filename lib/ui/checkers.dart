@@ -101,6 +101,10 @@ class _CheckersState extends State<Checkers> {
               child: Stack(
                 children: [
                   buildBoard(),
+                  IgnorePointer(
+                    ignoring: true,
+                    child: putChipsOnBoard(),
+                  ),
                 ],
               ),
             ),
@@ -121,7 +125,7 @@ class _CheckersState extends State<Checkers> {
 
   Widget buildBoard() {
     Color off = Color(0xFFCCCCCC);
-    List<Widget> colList = List<Widget>();
+    List<Widget> rowList = List<Widget>();
     for (int i = 0; i < 8; i++) {
       List<Widget> list = List<Widget>();
       Color first = Colors.black;
@@ -136,12 +140,6 @@ class _CheckersState extends State<Checkers> {
             onPanStart: (details) {
               print(details);
             },
-            onPanUpdate: (details) {
-              print(details);
-            },
-            onPanEnd: (details) {
-              print(details);
-            },
             onTap: () {
               print('Row $i, Column $j');
             },
@@ -153,11 +151,12 @@ class _CheckersState extends State<Checkers> {
           ),
         );
       }
-      colList.add(Row(
+      rowList.add(Row(
         children: list,
       ));
     }
     return Container(
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         border: Border.all(
           color: Color(0x99222222),
@@ -175,10 +174,67 @@ class _CheckersState extends State<Checkers> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: colList,
+              children: rowList,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget putChipsOnBoard() {
+    List<Widget> rowList = List<Widget>();
+    _model.gridList.forEach((row) {
+      List<Widget> list = List<Widget>();
+      row.forEach((value) {
+        list.add(buildChip(value));
+      });
+      rowList.add(Row(
+        children: list,
+      ));
+    });
+
+    return Container(
+      padding: EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 10,
+                color: Color(0x99222222),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: rowList,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildChip(int player) {
+    if (player == 0) {
+      return Container(
+          padding: EdgeInsets.all(5),
+          height: 40,
+          width: 40,
+          color: Colors.transparent);
+    }
+    return Container(
+      padding: EdgeInsets.all(5),
+      height: 40,
+      width: 40,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: player == 1 ? Colors.white : Colors.black,
+          width: 1,
+        ),
+        shape: BoxShape.circle,
+        color: player == 1 ? Colors.black87 : Colors.white,
       ),
     );
   }
