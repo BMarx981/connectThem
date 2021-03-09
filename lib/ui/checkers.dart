@@ -233,7 +233,7 @@ class _CheckersState extends State<Checkers> {
           width: 1,
         ),
         shape: BoxShape.circle,
-        color: player == 1 ? Colors.black87 : Colors.white,
+        color: player == 1 ? Colors.black45 : Colors.white,
       ),
     );
   }
