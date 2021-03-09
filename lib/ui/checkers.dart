@@ -203,7 +203,7 @@ class _CheckersState extends State<Checkers> {
             decoration: BoxDecoration(
               border: Border.all(
                 width: 10,
-                color: Color(0x99222222),
+                color: Colors.transparent,
               ),
             ),
             child: Column(
@@ -225,7 +225,6 @@ class _CheckersState extends State<Checkers> {
           color: Colors.transparent);
     }
     return Container(
-      padding: EdgeInsets.all(5),
       height: 40,
       width: 40,
       decoration: BoxDecoration(
