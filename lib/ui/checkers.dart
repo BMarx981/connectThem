@@ -6,9 +6,17 @@ class Checkers extends StatefulWidget {
   _CheckersState createState() => _CheckersState();
 }
 
+enum SelectionState {
+  waiting,
+  selected,
+  moving,
+}
+
 class _CheckersState extends State<Checkers> {
   int _player = 1;
   double _opacity = 0.0;
+  int _currentSelectionX = 0;
+  int _currentSelectionY = 0;
 
   CheckModel _model = CheckModel();
 
@@ -137,11 +145,10 @@ class _CheckersState extends State<Checkers> {
       for (int j = 0; j < 8; j++) {
         list.add(
           GestureDetector(
-            onPanStart: (details) {
-              print(details);
-            },
-            onTap: () {
-              print('Row $i, Column $j');
+            onTapDown: (details) {
+              _currentSelectionX = i;
+              _currentSelectionY = j;
+              
             },
             child: Container(
               height: 40,
@@ -229,8 +236,8 @@ class _CheckersState extends State<Checkers> {
       width: 40,
       decoration: BoxDecoration(
         border: Border.all(
-          color: player == 1 ? Colors.white : Colors.black,
-          width: 1,
+          color: player == 1 ? Colors.white : Colors.black45,
+          width: 2,
         ),
         shape: BoxShape.circle,
         color: player == 1 ? Colors.black45 : Colors.white,
