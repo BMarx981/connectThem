@@ -10,6 +10,7 @@ enum SelectionState {
   waiting,
   selected,
   moving,
+  moved,
 }
 
 class _CheckersState extends State<Checkers> {
@@ -17,6 +18,7 @@ class _CheckersState extends State<Checkers> {
   double _opacity = 0.0;
   int _currentSelectionX = 0;
   int _currentSelectionY = 0;
+  SelectionState currentState = SelectionState.waiting;
 
   CheckModel _model = CheckModel();
 
@@ -146,9 +148,43 @@ class _CheckersState extends State<Checkers> {
         list.add(
           GestureDetector(
             onTapDown: (details) {
-              _currentSelectionX = i;
-              _currentSelectionY = j;
-              
+              switch (currentState) {
+                case SelectionState.waiting:
+                  {
+                    _currentSelectionX = i;
+                    _currentSelectionY = j;
+                    currentState = SelectionState.selected;
+                    setState(() {});
+                    break;
+                  }
+                case SelectionState.selected:
+                  {
+                    currentState = SelectionState.moving;
+                    _currentSelectionX = i;
+                    _currentSelectionY = j;
+                    setState(() {});
+                    break;
+                  }
+                case SelectionState.moving:
+                  {
+                    currentState = SelectionState.moved;
+                    setState(() {});
+                    break;
+                  }
+                case SelectionState.moved:
+                  {
+                    currentState = SelectionState.waiting;
+                    setState(() {});
+                    break;
+                  }
+                default:
+                  {
+                    _currentSelectionX = 0;
+                    _currentSelectionY = 0;
+                    setState(() {});
+                    break;
+                  }
+              }
             },
             child: Container(
               height: 40,
@@ -240,7 +276,7 @@ class _CheckersState extends State<Checkers> {
           width: 2,
         ),
         shape: BoxShape.circle,
-        color: player == 1 ? Colors.black45 : Colors.white,
+        color: player == 1 ? Color(0xFF443333) : Colors.red,
       ),
     );
   }
