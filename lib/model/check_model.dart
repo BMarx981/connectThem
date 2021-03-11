@@ -20,24 +20,34 @@ class CheckModel {
         }
       }
     }
-    for (int i = 0; i >= 3 && i < 8; i++) {
+    for (int i = 3; i >= 3 && i < 5; i++) {
       for (int j = 0; j < 8; j++) {
         gridList[i][j] = 0;
       }
     }
-    for (int i = 0; i >= 5 && i < 8; i++) {
+    for (int i = 5; i >= 5 && i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-        if (i % 2 != 0 && j % 2 != 0) {
+        if (i % 2 != 0 && j % 2 == 0) {
           gridList[i][j] = 2;
         }
-        if (i % 2 == 0 && j % 2 == 0) {
+        if (i % 2 == 0 && j % 2 != 0) {
           gridList[i][j] = 2;
         }
       }
     }
   }
 
-  move(int oldRow, int oldCol, int newRow, int newCol) {
+  move(int oldRow, int oldCol, int newRow, int newCol, int player) {
     print('Oldrow: $oldRow, OldCol: $oldCol, newRow: $newRow, newCol: $newCol');
+    gridList[oldRow][oldCol] = 0;
+    gridList[newRow][newCol] = player;
+  }
+
+  void clear() {
+    List<int> list = [0, 0, 0, 0, 0, 0, 0, 0];
+    gridList.forEach((element) {
+      element.replaceRange(0, 8, list);
+    });
+    setInitialChips();
   }
 }

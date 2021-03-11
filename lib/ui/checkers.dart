@@ -9,7 +9,6 @@ class Checkers extends StatefulWidget {
 enum SelectionState {
   waiting,
   selected,
-  moving,
   moved,
 }
 
@@ -122,7 +121,7 @@ class _CheckersState extends State<Checkers> {
                 child: Center(
                     child: Text('Clear', style: TextStyle(fontSize: 30))),
                 onTap: () {
-                  // _model.clear();
+                  _model.clear();
                   _player = 1;
                   _opacity = 0.0;
                   setState(() {});
@@ -159,21 +158,16 @@ class _CheckersState extends State<Checkers> {
                   }
                 case SelectionState.selected:
                   {
-                    currentState = SelectionState.moving;
-                    _currentSelectionX = i;
-                    _currentSelectionY = j;
-                    setState(() {});
-                    break;
-                  }
-                case SelectionState.moving:
-                  {
                     currentState = SelectionState.moved;
+                    _model.move(
+                        _currentSelectionX, _currentSelectionY, i, j, _player);
                     setState(() {});
                     break;
                   }
                 case SelectionState.moved:
                   {
                     currentState = SelectionState.waiting;
+                    _player = _player == 1 ? 2 : 1;
                     setState(() {});
                     break;
                   }
@@ -181,6 +175,7 @@ class _CheckersState extends State<Checkers> {
                   {
                     _currentSelectionX = 0;
                     _currentSelectionY = 0;
+                    currentState = SelectionState.selected;
                     setState(() {});
                     break;
                   }
