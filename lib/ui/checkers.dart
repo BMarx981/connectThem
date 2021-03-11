@@ -9,7 +9,6 @@ class Checkers extends StatefulWidget {
 enum SelectionState {
   waiting,
   selected,
-  moved,
 }
 
 class _CheckersState extends State<Checkers> {
@@ -133,15 +132,15 @@ class _CheckersState extends State<Checkers> {
   }
 
   Widget buildBoard() {
-    Color off = Color(0xFFCCCCCC);
+    Color offWhite = Color(0xFFCCCCCC);
     List<Widget> rowList = List<Widget>();
     for (int i = 0; i < 8; i++) {
       List<Widget> list = List<Widget>();
-      Color first = Colors.black;
-      Color second = off;
+      Color firstColorOfRow = Colors.black;
+      Color secondColorOfRow = offWhite;
       if (i % 2 != 0) {
-        first = off;
-        second = Colors.black;
+        firstColorOfRow = offWhite;
+        secondColorOfRow = Colors.black;
       }
       for (int j = 0; j < 8; j++) {
         list.add(
@@ -150,6 +149,10 @@ class _CheckersState extends State<Checkers> {
               switch (currentState) {
                 case SelectionState.waiting:
                   {
+                    //If the selection is not the current player continue waiting
+                    if (_model.gridList[i][j] != _player) {
+                      break;
+                    }
                     _currentSelectionX = i;
                     _currentSelectionY = j;
                     currentState = SelectionState.selected;
@@ -158,17 +161,24 @@ class _CheckersState extends State<Checkers> {
                   }
                 case SelectionState.selected:
                   {
-                    currentState = SelectionState.moved;
+                    //Check if there is a piece on that square already
+                    //Make sure that the square is a valid square to land on.
+                    if (_model.gridList[i][j] != 0 ||
+                        (i % 2 == 0 && j % 2 == 0) ||
+                        (i % 2 != 0 && j % 2 != 0)) {
+                      break;
+                    }
+                    //If move is the same piece originally selected return to waiting
+                    if (i == _currentSelectionX && j == _currentSelectionY) {
+                      currentState = SelectionState.waiting;
+                      break;
+                    }
                     _model.move(
                         _currentSelectionX, _currentSelectionY, i, j, _player);
-                    setState(() {});
-                    break;
-                  }
-                case SelectionState.moved:
-                  {
                     currentState = SelectionState.waiting;
-                    _player = _player == 1 ? 2 : 1;
-                    setState(() {});
+                    setState(() {
+                      _player = _player == 1 ? 2 : 1;
+                    });
                     break;
                   }
                 default:
@@ -184,7 +194,7 @@ class _CheckersState extends State<Checkers> {
             child: Container(
               height: 40,
               width: 40,
-              color: j % 2 != 0 ? first : second,
+              color: j % 2 != 0 ? firstColorOfRow : secondColorOfRow,
             ),
           ),
         );
