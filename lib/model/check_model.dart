@@ -37,8 +37,60 @@ class CheckModel {
     }
   }
 
+  bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
+    bool value = false;
+    print(
+        'Player: $player, OldX: $oldX, OldY: $oldY, newX: $newX, newY: $newY');
+    if (player == 1) {
+      if ((oldX + 1 == newX && oldY - 1 == newY) ||
+          (oldX + 1 == newX && oldY + 1 == newY)) {
+        value = true;
+      }
+      if ((oldY - newY == 2 || newY - oldY == 2) &&
+          oldX + 2 == newX &&
+          oldY - 2 == newY &&
+          gridList[oldX + 1][oldY - 1] == 2) {
+        print("Here?");
+        gridList[oldX + 1][oldY - 1] = 0;
+        value = true;
+      }
+
+      if (oldY + 2 <= 7 &&
+          (oldY - newY == 2 || newY - oldY == 2) &&
+          oldX + 2 == newX &&
+          oldY + 2 == newY &&
+          gridList[oldX + 1][oldY + 1] == 2) {
+        gridList[oldX + 1][oldY + 1] = 0;
+        value = true;
+      }
+    }
+
+    if (player == 2) {
+      if ((oldX - 1 == newX && oldY - 1 == newY) ||
+          (oldX - 1 == newX && oldY + 1 == newY)) {
+        value = true;
+      }
+
+      if ((oldY - newY == 2 || newY - oldY == 2) &&
+          oldX - 2 == newX &&
+          oldY - 2 == newY &&
+          gridList[oldX - 1][oldY - 1] == 1) {
+        gridList[oldX - 1][oldY - 1] = 0;
+        value = true;
+      }
+      if (oldY + 2 <= 7 &&
+          (oldY - newY == 2 || newY - oldY == 2) &&
+          oldX - 2 == newX &&
+          oldY + 2 == newY &&
+          gridList[oldX - 1][oldY + 1] == 1) {
+        gridList[oldX - 1][oldY + 1] = 0;
+        value = true;
+      }
+    }
+    return value;
+  }
+
   move(int oldRow, int oldCol, int newRow, int newCol, int player) {
-    print('Oldrow: $oldRow, OldCol: $oldCol, newRow: $newRow, newCol: $newCol');
     gridList[oldRow][oldCol] = 0;
     gridList[newRow][newCol] = player;
   }

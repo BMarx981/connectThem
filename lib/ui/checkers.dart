@@ -123,6 +123,9 @@ class _CheckersState extends State<Checkers> {
                   _model.clear();
                   _player = 1;
                   _opacity = 0.0;
+                  _currentSelectionX = 0;
+                  _currentSelectionY = 0;
+                  currentState = SelectionState.waiting;
                   setState(() {});
                 }),
           ],
@@ -168,9 +171,14 @@ class _CheckersState extends State<Checkers> {
                         (i % 2 != 0 && j % 2 != 0)) {
                       break;
                     }
+
                     //If move is the same piece originally selected return to waiting
                     if (i == _currentSelectionX && j == _currentSelectionY) {
                       currentState = SelectionState.waiting;
+                      break;
+                    }
+                    if (!_model.isMoveValid(_currentSelectionX,
+                        _currentSelectionY, i, j, _player)) {
                       break;
                     }
                     _model.move(
