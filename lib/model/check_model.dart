@@ -59,6 +59,38 @@ class CheckModel {
         gridList[oldX + 1][oldY + 1] = 0;
         value = true;
       }
+      if ((oldY - newY == 0 || newY - oldY == 0) &&
+          oldX + 4 == newX &&
+          (gridList[oldX + 1][oldY - 1] == 2 ||
+              gridList[oldX + 1][oldY + 1] == 2) &&
+          (gridList[oldX + 2][oldY - 2] == 0 ||
+              gridList[oldX + 2][oldY + 2] == 0)) {
+        if (gridList[oldX + 1][oldY - 1] == 2) {
+          gridList[oldX + 1][oldY - 1] = 0;
+        } else if (gridList[oldX + 1][oldY + 1] == 2) {
+          gridList[oldX + 1][oldY + 1] = 0;
+        }
+        value = true;
+        gridList[oldX + 3][oldY - 1] = 0;
+      }
+      if ((oldY - newY == 4 || newY - oldY == 4) &&
+          oldX + 4 == newX &&
+          (gridList[oldX + 1][oldY - 1] == 2 ||
+              gridList[oldX + 1][oldY + 1] == 2) &&
+          (gridList[oldX + 2][oldY - 2] == 0 ||
+              gridList[oldX + 2][oldY + 2] == 0)) {
+        if (gridList[oldX + 1][oldY - 1] == 2 &&
+            gridList[oldX + 3][oldY - 3] == 2) {
+          gridList[oldX + 1][oldY - 1] = 0;
+          gridList[oldX + 3][oldY - 3] = 0;
+        }
+        if (gridList[oldX + 1][oldY + 1] == 2 &&
+            gridList[oldX + 3][oldY + 3] == 2) {
+          gridList[oldX + 1][oldY + 1] = 0;
+          gridList[oldX + 3][oldY + 3] = 0;
+        }
+        value = true;
+      }
     }
 
     if (player == 2) {
@@ -82,6 +114,39 @@ class CheckModel {
         gridList[oldX - 1][oldY + 1] = 0;
         value = true;
       }
+      if ((oldY - newY == 0 || newY - oldY == 0) &&
+          oldX - 4 == newX &&
+          (gridList[oldX - 1][oldY - 1] == 1 ||
+              gridList[oldX - 1][oldY + 1] == 1) &&
+          (gridList[oldX - 2][oldY - 2] == 0 ||
+              gridList[oldX - 2][oldY + 2] == 0)) {
+        if (gridList[oldX - 1][oldY - 1] == 1) {
+          gridList[oldX - 1][oldY - 1] = 0;
+        }
+        if (gridList[oldX - 1][oldY + 1] == 1) {
+          gridList[oldX - 1][oldY + 1] = 0;
+        }
+        value = true;
+        gridList[oldX - 3][oldY - 1] = 0;
+      }
+      if ((oldY - newY == 4 || newY - oldY == 4) &&
+          oldX - 4 == newX &&
+          (gridList[oldX - 1][oldY - 1] == 1 ||
+              gridList[oldX - 1][oldY + 1] == 1) &&
+          (gridList[oldX - 2][oldY - 2] == 0 ||
+              gridList[oldX - 2][oldY + 2] == 0)) {
+        if (gridList[oldX - 1][oldY - 1] == 1 &&
+            gridList[oldX - 3][oldY - 3] == 1) {
+          gridList[oldX - 1][oldY - 1] = 0;
+          gridList[oldX - 3][oldY - 3] = 0;
+        }
+        if (gridList[oldX - 1][oldY + 1] == 1 &&
+            gridList[oldX - 3][oldY + 3] == 1) {
+          gridList[oldX - 1][oldY + 1] = 0;
+          gridList[oldX - 3][oldY + 3] = 0;
+        }
+        value = true;
+      }
     }
     return value;
   }
@@ -100,8 +165,6 @@ class CheckModel {
     });
     return counts;
   }
-
-  _checkMovePlayers(int x, int y, int dx, int dy, int player) {}
 
   move(int oldRow, int oldCol, int newRow, int newCol, int player) {
     gridList[oldRow][oldCol] = 0;
