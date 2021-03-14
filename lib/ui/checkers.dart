@@ -116,6 +116,19 @@ class _CheckersState extends State<Checkers> {
                 ],
               ),
             ),
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 700),
+              opacity: _opacity,
+              child: Container(
+                child: Text(
+                  'Player $_player wins',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ),
             InkWell(
                 child: Center(
                     child: Text('Clear', style: TextStyle(fontSize: 30))),
@@ -184,6 +197,12 @@ class _CheckersState extends State<Checkers> {
                     _model.move(
                         _currentSelectionX, _currentSelectionY, i, j, _player);
                     currentState = SelectionState.waiting;
+                    List<int> count = _model.countRemaining();
+                    if (count[0] == 0 || count[1] == 0) {
+                      _opacity = 1.0;
+                      setState(() {});
+                      break;
+                    }
                     setState(() {
                       _player = _player == 1 ? 2 : 1;
                     });

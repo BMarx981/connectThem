@@ -39,8 +39,6 @@ class CheckModel {
 
   bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
     bool value = false;
-    print(
-        'Player: $player, OldX: $oldX, OldY: $oldY, newX: $newX, newY: $newY');
     if (player == 1) {
       if ((oldX + 1 == newX && oldY - 1 == newY) ||
           (oldX + 1 == newX && oldY + 1 == newY)) {
@@ -50,11 +48,9 @@ class CheckModel {
           oldX + 2 == newX &&
           oldY - 2 == newY &&
           gridList[oldX + 1][oldY - 1] == 2) {
-        print("Here?");
         gridList[oldX + 1][oldY - 1] = 0;
         value = true;
       }
-
       if (oldY + 2 <= 7 &&
           (oldY - newY == 2 || newY - oldY == 2) &&
           oldX + 2 == newX &&
@@ -89,6 +85,23 @@ class CheckModel {
     }
     return value;
   }
+
+  List<int> countRemaining() {
+    List<int> counts = [0, 0];
+    gridList.forEach((list) {
+      list.forEach((element) {
+        if (element == 1) {
+          counts[0]++;
+        }
+        if (element == 2) {
+          counts[1]++;
+        }
+      });
+    });
+    return counts;
+  }
+
+  _checkMovePlayers(int x, int y, int dx, int dy, int player) {}
 
   move(int oldRow, int oldCol, int newRow, int newCol, int player) {
     gridList[oldRow][oldCol] = 0;
