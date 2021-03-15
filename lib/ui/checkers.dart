@@ -8,6 +8,7 @@ class Checkers extends StatefulWidget {
 
 enum SelectionState {
   waiting,
+  selecting,
   selected,
 }
 
@@ -175,8 +176,22 @@ class _CheckersState extends State<Checkers> {
                     setState(() {});
                     break;
                   }
+                // case SelectionState.selecting:
+                //   {
+                //     break;
+                //   }
                 case SelectionState.selected:
                   {
+                    //if the same chip is selected 0 out the currenSelection variables
+                    if (i == _currentSelectionX && j == _currentSelectionY) {
+                      print('SAme selected');
+                      _currentSelectionX = 0;
+                      _currentSelectionY = 0;
+                      currentState = SelectionState.waiting;
+                      setState(() {});
+                      break;
+                    }
+
                     //Check if there is a piece on that square already
                     //Make sure that the square is a valid square to land on.
                     if (_model.gridList[i][j] != 0 ||
@@ -184,12 +199,10 @@ class _CheckersState extends State<Checkers> {
                         (i % 2 != 0 && j % 2 != 0)) {
                       break;
                     }
-
+                    print(
+                        'i:$i j:$j x:$_currentSelectionX y:$_currentSelectionY');
                     //If move is the same piece originally selected return to waiting
-                    if (i == _currentSelectionX && j == _currentSelectionY) {
-                      currentState = SelectionState.waiting;
-                      break;
-                    }
+
                     if (!_model.isMoveValid(_currentSelectionX,
                         _currentSelectionY, i, j, _player)) {
                       break;
@@ -259,15 +272,29 @@ class _CheckersState extends State<Checkers> {
 
   Widget putChipsOnBoard() {
     List<Widget> rowList = List<Widget>();
-    _model.gridList.forEach((row) {
+
+    for (int i = 0; i < _model.gridList.length; i++) {
       List<Widget> list = List<Widget>();
-      row.forEach((value) {
-        list.add(buildChip(value));
-      });
+      for (int j = 0; j < _model.gridList[i].length; j++) {
+        if (i == _currentSelectionX && j == _currentSelectionY) {
+          list.add(buildChip(_model.gridList[i][j], true));
+          continue;
+        }
+        list.add(buildChip(_model.gridList[i][j], false));
+      }
       rowList.add(Row(
         children: list,
       ));
-    });
+    }
+    // _model.gridList.forEach((row) {
+    //   List<Widget> list = List<Widget>();
+    //   row.forEach((value) {
+    //     list.add(buildChip(value));
+    //   });
+    //   rowList.add(Row(
+    //     children: list,
+    //   ));
+    // });
 
     return Container(
       padding: EdgeInsets.all(12),
@@ -291,7 +318,7 @@ class _CheckersState extends State<Checkers> {
     );
   }
 
-  Widget buildChip(int player) {
+  Widget buildChip(int player, bool selected) {
     if (player == 0) {
       return Container(
           padding: EdgeInsets.all(5),
@@ -299,17 +326,44 @@ class _CheckersState extends State<Checkers> {
           width: 40,
           color: Colors.transparent);
     }
-    return Container(
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: player == 1 ? Colors.white : Colors.black45,
-          width: 2,
-        ),
-        shape: BoxShape.circle,
-        color: player == 1 ? Color(0xFF443333) : Colors.red,
-      ),
-    );
+    // if (selected) {
+    //   return Container(
+    //     height: 40,
+    //     width: 40,
+    //     decoration: BoxDecoration(
+    //       border: Border.all(
+    //         color: Colors.blue,
+    //         width: 2,
+    //       ),
+    //       shape: BoxShape.circle,
+    //       color: player == 1 ? Color(0xFF443333) : Colors.red,
+    //     ),
+    //   );
+    // }
+    return selected
+        ? Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: player == 1 ? Colors.blue : Colors.white,
+                width: 2,
+              ),
+              shape: BoxShape.circle,
+              color: player == 1 ? Color(0xFF443333) : Colors.red,
+            ),
+          )
+        : Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: player == 1 ? Colors.white : Colors.black45,
+                width: 2,
+              ),
+              shape: BoxShape.circle,
+              color: player == 1 ? Color(0xFF443333) : Colors.red,
+            ),
+          );
   }
 }
