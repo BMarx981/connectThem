@@ -1,3 +1,4 @@
+import 'package:connect_four/model/othello_model.dart';
 import 'package:connect_four/ui/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class Othello extends StatefulWidget {
 
 class _OthelloState extends State<Othello> {
   int _player = 1;
+  OthelloModel _model = OthelloModel();
 
   @override
   Widget build(BuildContext context) {
@@ -81,33 +83,28 @@ class _OthelloState extends State<Othello> {
           spreadRadius: 7.0,
         ),
       ]),
-      child: Stack(
-        children: [
-          getGreenTiles(),
-          getChips(),
-        ],
-      ),
+      child: getGreenTiles(),
     );
   }
 
-  Widget getChips() {
+  Widget getChips(int i, int j) {
     return Container(
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Container(
             height: 40,
             width: 40,
             color: Colors.transparent,
           ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _player == 1 ? Colors.black : Colors.white,
-              ),
+          Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _model.grid[i][j] == 1
+                  ? Colors.black.withOpacity(_model.grid[i][j] == 0 ? 0 : 1)
+                  : Colors.white.withOpacity(_model.grid[i][j] == 0 ? 0 : 1),
             ),
           ),
         ],
@@ -126,6 +123,7 @@ class _OthelloState extends State<Othello> {
               tapped(i, j);
             },
             child: Container(
+              child: getChips(i, j),
               height: 40,
               width: 40,
               decoration: BoxDecoration(
