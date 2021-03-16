@@ -8,7 +8,6 @@ class Checkers extends StatefulWidget {
 
 enum SelectionState {
   waiting,
-  selecting,
   selected,
 }
 
@@ -161,6 +160,7 @@ class _CheckersState extends State<Checkers> {
       }
       for (int j = 0; j < 8; j++) {
         list.add(
+          //The gestureDetector starts here.
           GestureDetector(
             onTapDown: (details) {
               switch (currentState) {
@@ -176,15 +176,11 @@ class _CheckersState extends State<Checkers> {
                     setState(() {});
                     break;
                   }
-                // case SelectionState.selecting:
-                //   {
-                //     break;
-                //   }
                 case SelectionState.selected:
                   {
-                    //if the same chip is selected 0 out the currenSelection variables
+                    //if the same chip is selected 0 out the currentSelection
+                    // variables and return to waiting
                     if (i == _currentSelectionX && j == _currentSelectionY) {
-                      print('SAme selected');
                       _currentSelectionX = 0;
                       _currentSelectionY = 0;
                       currentState = SelectionState.waiting;
@@ -199,14 +195,14 @@ class _CheckersState extends State<Checkers> {
                         (i % 2 != 0 && j % 2 != 0)) {
                       break;
                     }
-                    print(
-                        'i:$i j:$j x:$_currentSelectionX y:$_currentSelectionY');
-                    //If move is the same piece originally selected return to waiting
 
+                    // Check if the move is not valid
                     if (!_model.isMoveValid(_currentSelectionX,
                         _currentSelectionY, i, j, _player)) {
                       break;
                     }
+
+                    //Make the move and return to waiting.
                     _model.move(
                         _currentSelectionX, _currentSelectionY, i, j, _player);
                     currentState = SelectionState.waiting;
@@ -286,15 +282,6 @@ class _CheckersState extends State<Checkers> {
         children: list,
       ));
     }
-    // _model.gridList.forEach((row) {
-    //   List<Widget> list = List<Widget>();
-    //   row.forEach((value) {
-    //     list.add(buildChip(value));
-    //   });
-    //   rowList.add(Row(
-    //     children: list,
-    //   ));
-    // });
 
     return Container(
       padding: EdgeInsets.all(12),
@@ -326,25 +313,18 @@ class _CheckersState extends State<Checkers> {
           width: 40,
           color: Colors.transparent);
     }
-    // if (selected) {
-    //   return Container(
-    //     height: 40,
-    //     width: 40,
-    //     decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: Colors.blue,
-    //         width: 2,
-    //       ),
-    //       shape: BoxShape.circle,
-    //       color: player == 1 ? Color(0xFF443333) : Colors.red,
-    //     ),
-    //   );
-    // }
     return selected
         ? Container(
             height: 40,
             width: 40,
             decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.shade700,
+                    spreadRadius: 1.0,
+                    blurRadius: 10.0,
+                    offset: Offset(3.0, 3.0))
+              ],
               border: Border.all(
                 color: player == 1 ? Colors.blue : Colors.white,
                 width: 2,
@@ -357,8 +337,15 @@ class _CheckersState extends State<Checkers> {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.shade700,
+                    spreadRadius: 1.0,
+                    blurRadius: 10.0,
+                    offset: Offset(3.0, 3.0))
+              ],
               border: Border.all(
-                color: player == 1 ? Colors.white : Colors.black45,
+                color: player == 1 ? Colors.white : Colors.red,
                 width: 2,
               ),
               shape: BoxShape.circle,
