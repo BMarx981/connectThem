@@ -82,39 +82,72 @@ class _OthelloState extends State<Othello> {
         ),
       ]),
       child: Stack(
-        children: [getGreenTiles()],
+        children: [
+          getGreenTiles(),
+          getChips(),
+        ],
+      ),
+    );
+  }
+
+  Widget getChips() {
+    return Container(
+      child: Stack(
+        children: [
+          Container(
+            height: 40,
+            width: 40,
+            color: Colors.transparent,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _player == 1 ? Colors.black : Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget getGreenTiles() {
-    List<Widget> row = List.generate(
+    List<Widget> col = List.generate(
       8,
-      (index) => GestureDetector(
-        onTap: () {
-          
-        },
-              child: Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: Colors.green[700],
-            border: Border.all(
-              color: Colors.black,
-              width: 1,
+      (i) => Row(
+        children: List.generate(
+          8,
+          (j) => GestureDetector(
+            onTap: () {
+              tapped(i, j);
+            },
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.green[700],
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
+              ),
             ),
           ),
         ),
       ),
     );
-    List<Widget> col = List.generate(
-      8,
-      (index) => Row(
-        children: row,
-      ),
-    );
     return Column(
       children: col,
     );
+  }
+
+  tapped(int i, int j) {
+    print('$i , $j');
+    _player = _player == 1 ? 2 : 1;
+    setState(() {});
   }
 }
