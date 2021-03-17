@@ -34,10 +34,10 @@ class _OthelloState extends State<Othello> {
                             style: TextStyle(
                                 fontSize: 24,
                                 color: _player == 1
-                                    ? Colors.black
+                                    ? Colors.white
                                     : Colors.grey))),
                     decoration: BoxDecoration(
-                      color: _player == 1 ? Colors.red : Colors.red[200],
+                      color: _player == 1 ? Colors.black : Colors.black26,
                     ),
                   ),
                 ),
@@ -53,20 +53,33 @@ class _OthelloState extends State<Othello> {
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                      color: _player == 2 ? Colors.white : Colors.grey[200],
                     ),
                   ),
                 ),
               ],
             ),
             Container(
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildBoard(),
-                  ],
-                )),
+              padding: EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildBoard(),
+                ],
+              ),
+            ),
+            InkWell(
+              child: Text(
+                'Clear',
+                style: TextStyle(fontSize: 30),
+              ),
+              onTap: () {
+                _model.clear();
+                setState(() {
+                  _player = 1;
+                });
+              },
+            )
           ],
         ),
       ),
