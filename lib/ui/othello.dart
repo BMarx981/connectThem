@@ -101,6 +101,13 @@ class _OthelloState extends State<Othello> {
             height: 30,
             width: 30,
             decoration: BoxDecoration(
+              boxShadow: [
+                // BoxShadow(
+                //   color: Colors.green[900].withOpacity(0.5),
+                //   blurRadius: 2,
+                //   spreadRadius: 5,
+                // ),
+              ],
               shape: BoxShape.circle,
               color: _model.grid[i][j] == 1
                   ? Colors.black.withOpacity(_model.grid[i][j] == 0 ? 0 : 1)
@@ -145,6 +152,7 @@ class _OthelloState extends State<Othello> {
 
   tapped(int i, int j) {
     print('$i , $j');
+    _model.tileSelected(i, j, _player);
     _player = _player == 1 ? 2 : 1;
     setState(() {});
   }
