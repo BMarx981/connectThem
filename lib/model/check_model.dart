@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class CheckModel {
   List<List<int>> gridList = [
     [0, 1, 0, 1, 0, 1, 0, 1],
@@ -37,120 +39,121 @@ class CheckModel {
     }
   }
 
-  bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
-    bool value = false;
+  bool findAttackMove(int x, int y, int dx, int dy, int player, int opponent) {
+    bool v = false;
     if (player == 1) {
-      if ((oldX + 1 == newX && oldY - 1 == newY) ||
-          (oldX + 1 == newX && oldY + 1 == newY)) {
-        value = true;
+      if (y < dy && gridList[dx - 1][dy - 1] == opponent) {
+        gridList[dx - 1][dy - 1] = 0;
+        v = true;
+      } else if (y > dy && gridList[dx - 1][dy + 1] == opponent) {
+        gridList[dx - 1][dy + 1] = 0;
+        v = true;
       }
-      if ((oldY - newY == 2 || newY - oldY == 2) &&
-          oldX + 2 == newX &&
-          oldY - 2 == newY &&
-          gridList[oldX + 1][oldY - 1] == 2) {
-        gridList[oldX + 1][oldY - 1] = 0;
-        value = true;
+    }
+    if (player == 2) {
+      if (y < dy && gridList[dx + 1][dy - 1] == opponent) {
+        gridList[dx + 1][dy - 1] = 0;
+        v = true;
+      } else if (y > dy && gridList[dx + 1][dy + 1] == opponent) {
+        gridList[dx + 1][dy + 1] = 0;
+        v = true;
       }
-      if (oldY + 2 <= 7 &&
-          (oldY - newY == 2 || newY - oldY == 2) &&
-          oldX + 2 == newX &&
-          oldY + 2 == newY &&
-          gridList[oldX + 1][oldY + 1] == 2) {
-        gridList[oldX + 1][oldY + 1] = 0;
-        value = true;
-      }
-      if ((oldY - newY == 0 || newY - oldY == 0) &&
-          oldX + 4 == newX &&
-          (gridList[oldX + 1][oldY - 1] == 2 ||
-              gridList[oldX + 1][oldY + 1] == 2) &&
-          (gridList[oldX + 2][oldY - 2] == 0 ||
-              gridList[oldX + 2][oldY + 2] == 0)) {
-        if (gridList[oldX + 1][oldY - 1] == 2) {
-          gridList[oldX + 1][oldY - 1] = 0;
-        } else if (gridList[oldX + 1][oldY + 1] == 2) {
-          gridList[oldX + 1][oldY + 1] = 0;
-        }
-        value = true;
-        gridList[oldX + 3][oldY - 1] = 0;
-      }
-      if ((oldY - newY == 4 || newY - oldY == 4) &&
-          oldX + 4 == newX &&
-          (gridList[oldX + 1][oldY - 1] == 2 ||
-              gridList[oldX + 1][oldY + 1] == 2) &&
-          (gridList[oldX + 2][oldY - 2] == 0 ||
-              gridList[oldX + 2][oldY + 2] == 0)) {
-        if (gridList[oldX + 1][oldY - 1] == 2 &&
-            gridList[oldX + 3][oldY - 3] == 2) {
-          gridList[oldX + 1][oldY - 1] = 0;
-          gridList[oldX + 3][oldY - 3] = 0;
-        }
-        if (gridList[oldX + 1][oldY + 1] == 2 &&
-            gridList[oldX + 3][oldY + 3] == 2) {
-          gridList[oldX + 1][oldY + 1] = 0;
-          gridList[oldX + 3][oldY + 3] = 0;
-        }
-        value = true;
+    }
+    return v;
+  }
+
+  List<Point> recurseAttackMove(int x, int y, int dx, int dy, int player,
+      int opponent, List<Point> list) {
+    print('X: $x, Y:$y, dx: $dx, dy: $dy, player: $player, op: $opponent');
+    if (x > 8 || x < 0 || y > 8 || y < 0) {
+      list.clear();
+      return list;
+    }
+    if (x == dx && y == dy) {
+      return list;
+    }
+
+    if (player == 1) {
+      if (findAttackMove(x + 2, y + 2, dx, dy, player, opponent)) {
+        print('X2: $x');
+        list.add(Point(x + 1, y + 1));
+        return recurseAttackMove(x + 2, y + 2, dx, dy, player, opponent, list);
+      } else if (findAttackMove(x + 2, y - 2, dx, dy, player, opponent)) {
+        print('X1: $x');
+        list.add(Point(x + 1, y - 1));
+        return recurseAttackMove(x + 2, y - 2, dx, dy, player, opponent, list);
       }
     }
 
     if (player == 2) {
-      if ((oldX - 1 == newX && oldY - 1 == newY) ||
-          (oldX - 1 == newX && oldY + 1 == newY)) {
-        value = true;
+      if (findAttackMove(x - 2, y - 2, dx, dy, player, opponent)) {
+        list.add(Point(x - 1, y - 1));
+        return recurseAttackMove(x - 2, y - 2, dx, dy, player, opponent, list);
+      } else if (findAttackMove(x - 2, y + 2, dx, dy, player, opponent)) {
+        list.add(Point(x - 1, y + 1));
+        return recurseAttackMove(x - 2, y + 2, dx, dy, player, opponent, list);
+      }
+    }
+    return list;
+  }
+
+  bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
+    bool value = false;
+    int opponent = player == 1 ? 2 : 1;
+    int diff = (oldX - newX).abs();
+    if (player == 1) {
+      //If player one just moves to a valid open spot
+      if (diff == 1) {
+        return true;
+      }
+      //Player attacks a one jump.
+      if (diff == 2) {
+        return findAttackMove(oldX, oldY, newX, newY, player, opponent);
+      } else if (diff > 2) {
+        //Player attacks more than one opponent in a single move
+        List<Point> list = [];
+        recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+        if (list.length == 0) {
+          return false;
+        }
+        print(list.length);
+        list.forEach((e) {
+          print('${e.x}, ${e.y}');
+          gridList[e.x][e.y] = 0;
+        });
+        return true;
+      }
+    }
+
+    if (player == 2) {
+      // If player moves to vaild open spot
+      if (diff == 1) {
+        return true;
       }
 
-      if ((oldY - newY == 2 || newY - oldY == 2) &&
-          oldX - 2 == newX &&
-          oldY - 2 == newY &&
-          gridList[oldX - 1][oldY - 1] == 1) {
-        gridList[oldX - 1][oldY - 1] = 0;
-        value = true;
-      }
-      if (oldY + 2 <= 7 &&
-          (oldY - newY == 2 || newY - oldY == 2) &&
-          oldX - 2 == newX &&
-          oldY + 2 == newY &&
-          gridList[oldX - 1][oldY + 1] == 1) {
-        gridList[oldX - 1][oldY + 1] = 0;
-        value = true;
-      }
-      if ((oldY - newY == 0 || newY - oldY == 0) &&
-          oldX - 4 == newX &&
-          (gridList[oldX - 1][oldY - 1] == 1 ||
-              gridList[oldX - 1][oldY + 1] == 1) &&
-          (gridList[oldX - 2][oldY - 2] == 0 ||
-              gridList[oldX - 2][oldY + 2] == 0)) {
-        if (gridList[oldX - 1][oldY - 1] == 1) {
-          gridList[oldX - 1][oldY - 1] = 0;
+      //Player attacks a one jump.
+      if (diff == 2) {
+        return findAttackMove(oldX, oldY, newX, newY, player, opponent);
+      } else if (diff > 2) {
+        //Player attacks more than one opponent in a single move
+        List<Point> list = [];
+        recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+        if (list.length == 0) {
+          return false;
         }
-        if (gridList[oldX - 1][oldY + 1] == 1) {
-          gridList[oldX - 1][oldY + 1] = 0;
-        }
-        value = true;
-        gridList[oldX - 3][oldY - 1] = 0;
-      }
-      if ((oldY - newY == 4 || newY - oldY == 4) &&
-          oldX - 4 == newX &&
-          (gridList[oldX - 1][oldY - 1] == 1 ||
-              gridList[oldX - 1][oldY + 1] == 1) &&
-          (gridList[oldX - 2][oldY - 2] == 0 ||
-              gridList[oldX - 2][oldY + 2] == 0)) {
-        if (gridList[oldX - 1][oldY - 1] == 1 &&
-            gridList[oldX - 3][oldY - 3] == 1) {
-          gridList[oldX - 1][oldY - 1] = 0;
-          gridList[oldX - 3][oldY - 3] = 0;
-        }
-        if (gridList[oldX - 1][oldY + 1] == 1 &&
-            gridList[oldX - 3][oldY + 3] == 1) {
-          gridList[oldX - 1][oldY + 1] = 0;
-          gridList[oldX - 3][oldY + 3] = 0;
-        }
-        value = true;
+        print(list.length);
+        list.forEach((e) {
+          print('${e.x}, ${e.y}');
+          gridList[e.x][e.y] = 0;
+        });
+        return true;
       }
     }
     return value;
   }
 
+//Counts the remaining chips for each player
+//Should be called after every move.
   List<int> countRemaining() {
     List<int> counts = [0, 0];
     gridList.forEach((list) {
