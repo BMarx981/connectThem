@@ -101,6 +101,7 @@ class _OthelloState extends State<Othello> {
   }
 
   Widget getChips(int i, int j) {
+    double opac = _model.grid[i][j] == 0 ? 0 : 1;
     return Container(
       child: Stack(
         alignment: Alignment.center,
@@ -113,18 +114,21 @@ class _OthelloState extends State<Othello> {
           Container(
             height: 30,
             width: 30,
-            decoration: BoxDecoration(
-              boxShadow: [
-                // BoxShadow(
-                //   color: Colors.green[900].withOpacity(0.5),
-                //   blurRadius: 2,
-                //   spreadRadius: 5,
-                // ),
-              ],
-              shape: BoxShape.circle,
-              color: _model.grid[i][j] == 1
-                  ? Colors.black.withOpacity(_model.grid[i][j] == 0 ? 0 : 1)
-                  : Colors.white.withOpacity(_model.grid[i][j] == 0 ? 0 : 1),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green[900].withOpacity(opac),
+                    blurRadius: 3,
+                    offset: Offset(5.0, 2.0),
+                    spreadRadius: 2.0,
+                  ),
+                ],
+                shape: BoxShape.circle,
+                color: _model.grid[i][j] == 1
+                    ? Colors.black.withOpacity(opac)
+                    : Colors.grey[200].withOpacity(opac),
+              ),
             ),
           ),
         ],
@@ -140,6 +144,9 @@ class _OthelloState extends State<Othello> {
           8,
           (j) => GestureDetector(
             onTap: () {
+              if (_model.grid[i][j] != 0) {
+                return;
+              }
               tapped(i, j);
             },
             child: Container(
@@ -164,7 +171,6 @@ class _OthelloState extends State<Othello> {
   }
 
   tapped(int i, int j) {
-    print('$i , $j');
     _model.tileSelected(i, j, _player);
     _player = _player == 1 ? 2 : 1;
     setState(() {});

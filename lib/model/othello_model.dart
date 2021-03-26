@@ -154,11 +154,9 @@ class OthelloModel {
           check = true;
         }
       } else if (grid[index][j] == opponent) {
-        print('Here');
         list.add(Point(index, j));
       }
     }
-    print('T $check');
     if (check) {
       list.forEach((point) {
         grid[point.x][point.y] = player;
