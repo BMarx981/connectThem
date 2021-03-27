@@ -33,71 +33,74 @@ class _CheckersState extends State<Checkers> {
       body: Center(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 70,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
                     child: Container(
-                      child: Center(
-                          child: Text("Player 1",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: _player == 1
-                                      ? Colors.black
-                                      : Colors.grey))),
-                    ),
-                    decoration: BoxDecoration(
-                      boxShadow: _player == 2
-                          ? null
-                          : [
-                              BoxShadow(
-                                  blurRadius: 2.0,
-                                  offset: Offset(3.0, 3.0),
-                                  color:
-                                      Color.lerp(Colors.red, Colors.white, .3))
-                            ],
-                      border: _player == 2
-                          ? null
-                          : Border.all(color: Colors.yellow, width: 2),
-                      borderRadius:
-                          _player == 2 ? null : BorderRadius.circular(12),
-                      color: _player == 1 ? Colors.red : Colors.red[200],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 70,
-                    child: Center(
-                      child: Text(
-                        "Player 2",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: _player == 2 ? Colors.black : Colors.grey),
+                      height: 70,
+                      child: Container(
+                        child: Center(
+                            child: Text("Player 1",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: _player == 1
+                                        ? Colors.black
+                                        : Colors.grey))),
+                      ),
+                      decoration: BoxDecoration(
+                        boxShadow: _player == 2
+                            ? null
+                            : [
+                                BoxShadow(
+                                    blurRadius: 2.0,
+                                    offset: Offset(3.0, 3.0),
+                                    color: Color.lerp(
+                                        Colors.grey.shade600, Colors.white, .3))
+                              ],
+                        border: _player == 2
+                            ? null
+                            : Border.all(color: Colors.yellow, width: 2),
+                        borderRadius: BorderRadius.circular(12),
+                        color: _player == 1 ? Colors.red : Colors.red[200],
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      boxShadow: _player == 1
-                          ? null
-                          : [
-                              BoxShadow(
-                                  blurRadius: 2.0,
-                                  offset: Offset(3.0, 3.0),
-                                  color: Color.lerp(
-                                      Colors.yellow, Colors.white, .3))
-                            ],
-                      border: _player == 1
-                          ? null
-                          : Border.all(color: Colors.red, width: 2),
-                      borderRadius:
-                          _player == 1 ? null : BorderRadius.circular(12),
-                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      height: 70,
+                      child: Center(
+                        child: Text(
+                          "Player 2",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: _player == 2 ? Colors.black : Colors.grey),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        boxShadow: _player == 1
+                            ? null
+                            : [
+                                BoxShadow(
+                                    blurRadius: 2.0,
+                                    offset: Offset(3.0, 3.0),
+                                    color: Color.lerp(
+                                        Colors.grey.shade600, Colors.white, .3))
+                              ],
+                        border: _player == 1
+                            ? null
+                            : Border.all(color: Colors.red, width: 2),
+                        borderRadius: BorderRadius.circular(12),
+                        color:
+                            _player == 2 ? Colors.yellow : Colors.yellow[200],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Container(
               child: Stack(

@@ -27,40 +27,73 @@ class _TicState extends State<Tic> {
       body: Column(
         children: [
           //Player row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 70,
-                  child: Center(
-                      child: Text("Player 1",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color:
-                                  _player == 1 ? Colors.black : Colors.grey))),
-                  decoration: BoxDecoration(
-                    color: _player == 1 ? Colors.red : Colors.red[200],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  height: 70,
-                  child: Center(
-                    child: Text(
-                      "Player 2",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: _player == 2 ? Colors.black : Colors.grey),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 70,
+                    child: Container(
+                      child: Center(
+                          child: Text("Player 1",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: _player == 1
+                                      ? Colors.black
+                                      : Colors.grey))),
+                    ),
+                    decoration: BoxDecoration(
+                      boxShadow: _player == 2
+                          ? null
+                          : [
+                              BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(4.0, 4.0),
+                                  color: Color.lerp(
+                                      Colors.grey.shade600, Colors.white, .3))
+                            ],
+                      border: _player == 2
+                          ? null
+                          : Border.all(color: Colors.yellow, width: 2),
+                      borderRadius: BorderRadius.circular(12),
+                      color: _player == 1 ? Colors.red : Colors.red[200],
                     ),
                   ),
-                  decoration: BoxDecoration(
-                    color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                ),
+                SizedBox(width: 20),
+                Expanded(
+                  child: Container(
+                    height: 70,
+                    child: Center(
+                      child: Text(
+                        "Player 2",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: _player == 2 ? Colors.black : Colors.grey),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      boxShadow: _player == 1
+                          ? null
+                          : [
+                              BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(4.0, 4.0),
+                                  color: Color.lerp(
+                                      Colors.grey.shade600, Colors.white, .3))
+                            ],
+                      border: _player == 1
+                          ? null
+                          : Border.all(color: Colors.red, width: 2),
+                      borderRadius: BorderRadius.circular(12),
+                      color: _player == 2 ? Colors.yellow : Colors.yellow[200],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           //TicTacToe board
           Expanded(
@@ -353,7 +386,6 @@ class _TicState extends State<Tic> {
 
   void cellSelected(int row, int col) {
     _model.grid[row][col] = _player;
-    print(_model.isWinner(_player));
     if (_model.isWinner(_player)) {
       _opacity = 1;
       setState(() {});
