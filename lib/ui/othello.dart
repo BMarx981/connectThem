@@ -92,42 +92,6 @@ class _OthelloState extends State<Othello> {
                 ],
               ),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     Expanded(
-            //       child: Container(
-            //         height: 70,
-            //         child: Center(
-            //             child: Text("Player 1",
-            //                 style: TextStyle(
-            //                     fontSize: 24,
-            //                     color: _player == 1
-            //                         ? Colors.white
-            //                         : Colors.grey))),
-            //         decoration: BoxDecoration(
-            //           color: _player == 1 ? Colors.black : Colors.black26,
-            //         ),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: Container(
-            //         height: 70,
-            //         child: Center(
-            //           child: Text(
-            //             "Player 2",
-            //             style: TextStyle(
-            //                 fontSize: 24,
-            //                 color: _player == 2 ? Colors.black : Colors.grey),
-            //           ),
-            //         ),
-            //         decoration: BoxDecoration(
-            //           color: _player == 2 ? Colors.white : Colors.grey[200],
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Container(
               padding: EdgeInsets.all(12),
               child: Row(
@@ -184,19 +148,27 @@ class _OthelloState extends State<Othello> {
             height: 30,
             width: 30,
             child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.green[900].withOpacity(opac),
-                    blurRadius: 3,
-                    offset: Offset(5.0, 2.0),
-                    spreadRadius: 2.0,
-                  ),
-                ],
-                shape: BoxShape.circle,
+              child: PhysicalModel(
                 color: _model.grid[i][j] == 1
                     ? Colors.black.withOpacity(opac)
                     : Colors.grey[200].withOpacity(opac),
+                shape: BoxShape.circle,
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green[900].withOpacity(opac),
+                        blurRadius: 3,
+                        offset: Offset(5.0, 2.0),
+                        spreadRadius: 2.0,
+                      ),
+                    ],
+                    shape: BoxShape.circle,
+                    color: _model.grid[i][j] == 1
+                        ? Colors.black.withOpacity(opac)
+                        : Colors.grey[200].withOpacity(opac),
+                  ),
+                ),
               ),
             ),
           ),
