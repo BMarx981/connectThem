@@ -39,14 +39,30 @@ class _CheckersState extends State<Checkers> {
                 Expanded(
                   child: Container(
                     height: 70,
-                    child: Center(
-                        child: Text("Player 1",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: _player == 1
-                                    ? Colors.black
-                                    : Colors.grey))),
+                    child: Container(
+                      child: Center(
+                          child: Text("Player 1",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: _player == 1
+                                      ? Colors.black
+                                      : Colors.grey))),
+                    ),
                     decoration: BoxDecoration(
+                      boxShadow: _player == 2
+                          ? null
+                          : [
+                              BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(3.0, 3.0),
+                                  color:
+                                      Color.lerp(Colors.red, Colors.white, .3))
+                            ],
+                      border: _player == 2
+                          ? null
+                          : Border.all(color: Colors.yellow, width: 2),
+                      borderRadius:
+                          _player == 2 ? null : BorderRadius.circular(12),
                       color: _player == 1 ? Colors.red : Colors.red[200],
                     ),
                   ),
@@ -63,6 +79,20 @@ class _CheckersState extends State<Checkers> {
                       ),
                     ),
                     decoration: BoxDecoration(
+                      boxShadow: _player == 1
+                          ? null
+                          : [
+                              BoxShadow(
+                                  blurRadius: 2.0,
+                                  offset: Offset(3.0, 3.0),
+                                  color: Color.lerp(
+                                      Colors.yellow, Colors.white, .3))
+                            ],
+                      border: _player == 1
+                          ? null
+                          : Border.all(color: Colors.red, width: 2),
+                      borderRadius:
+                          _player == 1 ? null : BorderRadius.circular(12),
                       color: _player == 2 ? Colors.yellow : Colors.yellow[200],
                     ),
                   ),
@@ -284,14 +314,16 @@ class _CheckersState extends State<Checkers> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.shade700,
-                    spreadRadius: 1.0,
-                    blurRadius: 10.0,
-                    offset: Offset(3.0, 3.0))
+                    color: player == 1
+                        ? Colors.grey.shade900
+                        : Color.lerp(Colors.grey.shade900, Colors.black, .6),
+                    spreadRadius: 2.0,
+                    blurRadius: 5.0,
+                    offset: Offset(3.0, 6.0))
               ],
               border: Border.all(
                 color: player == 1 ? Colors.blue : Colors.white,
-                width: 2,
+                width: 3,
               ),
               shape: BoxShape.circle,
               color: player == 1 ? Color(0xFF443333) : Colors.red,
@@ -303,14 +335,16 @@ class _CheckersState extends State<Checkers> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.shade700,
-                    spreadRadius: 1.0,
-                    blurRadius: 10.0,
-                    offset: Offset(3.0, 3.0))
+                    color: Colors.grey.shade900,
+                    spreadRadius: 2.0,
+                    blurRadius: 4.0,
+                    offset: Offset(3.0, 6.0))
               ],
               border: Border.all(
-                color: player == 1 ? Colors.white : Colors.red,
-                width: 2,
+                color: player == 1
+                    ? Color.lerp(Colors.white, Color(0xFF443333), .4)
+                    : Colors.red.shade800,
+                width: 3,
               ),
               shape: BoxShape.circle,
               color: player == 1 ? Color(0xFF443333) : Colors.red,
