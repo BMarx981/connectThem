@@ -23,42 +23,111 @@ class _OthelloState extends State<Othello> {
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 70,
-                    child: Center(
-                        child: Text("Player 1",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: _player == 1
-                                    ? Colors.white
-                                    : Colors.grey))),
-                    decoration: BoxDecoration(
-                      color: _player == 1 ? Colors.black : Colors.black26,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 70,
-                    child: Center(
-                      child: Text(
-                        "Player 2",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: _player == 2 ? Colors.black : Colors.grey),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 70,
+                      child: Container(
+                        child: Center(
+                            child: Text("Player 1",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: _player == 1
+                                        ? Colors.white
+                                        : Colors.black87.withOpacity(.3)))),
+                      ),
+                      decoration: BoxDecoration(
+                        boxShadow: _player == 2
+                            ? null
+                            : [
+                                BoxShadow(
+                                    blurRadius: 2.0,
+                                    offset: Offset(3.0, 3.0),
+                                    color: Color.lerp(
+                                        Colors.black, Colors.white, .7))
+                              ],
+                        border: _player == 2
+                            ? null
+                            : Border.all(color: Colors.black, width: 2),
+                        borderRadius:
+                            _player == 2 ? null : BorderRadius.circular(12),
+                        color: _player == 1 ? Colors.black : Colors.black38,
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      color: _player == 2 ? Colors.white : Colors.grey[200],
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      height: 70,
+                      child: Center(
+                        child: Text(
+                          "Player 2",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: _player == 2 ? Colors.black : Colors.grey),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        boxShadow: _player == 1
+                            ? null
+                            : [
+                                BoxShadow(
+                                    blurRadius: 2.0,
+                                    offset: Offset(3.0, 3.0),
+                                    color: Color.lerp(
+                                        Colors.white, Colors.black, .8))
+                              ],
+                        border: _player == 1
+                            ? Border.all(color: Colors.black38, width: 2)
+                            : Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(12),
+                        color: _player == 2 ? Colors.white : Colors.white24,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     Expanded(
+            //       child: Container(
+            //         height: 70,
+            //         child: Center(
+            //             child: Text("Player 1",
+            //                 style: TextStyle(
+            //                     fontSize: 24,
+            //                     color: _player == 1
+            //                         ? Colors.white
+            //                         : Colors.grey))),
+            //         decoration: BoxDecoration(
+            //           color: _player == 1 ? Colors.black : Colors.black26,
+            //         ),
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: Container(
+            //         height: 70,
+            //         child: Center(
+            //           child: Text(
+            //             "Player 2",
+            //             style: TextStyle(
+            //                 fontSize: 24,
+            //                 color: _player == 2 ? Colors.black : Colors.grey),
+            //           ),
+            //         ),
+            //         decoration: BoxDecoration(
+            //           color: _player == 2 ? Colors.white : Colors.grey[200],
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Container(
               padding: EdgeInsets.all(12),
               child: Row(
