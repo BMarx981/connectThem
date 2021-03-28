@@ -159,7 +159,7 @@ class _CheckersState extends State<Checkers> {
         list.add(
           //The gestureDetector starts here.
           GestureDetector(
-            onTapDown: (details) {
+            onTap: () {
               switch (currentState) {
                 case SelectionState.waiting:
                   {

@@ -139,7 +139,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
             ),
           ]),
           AnimatedOpacity(
-              duration: Duration(seconds: 1),
+              duration: Duration(milliseconds: 700),
               opacity: _opacity,
               child: Center(
                 child: Container(
@@ -154,7 +154,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
                   ),
                 ),
               )),
-          SizedBox(height: 40),
+          SizedBox(height: 10),
           InkWell(
               child:
                   Center(child: Text('Clear', style: TextStyle(fontSize: 30))),
