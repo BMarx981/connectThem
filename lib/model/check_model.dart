@@ -100,47 +100,23 @@ class CheckModel {
     bool value = false;
     int opponent = player == 1 ? 2 : 1;
     int diff = (oldX - newX).abs();
-    if (player == 1) {
-      //If player one just moves to a valid open spot
-      if (diff == 1) {
-        return true;
-      }
-      //Player attacks a one jump.
-      if (diff == 2) {
-        return findAttackMove(oldX, oldY, newX, newY, player, opponent);
-      } else if (diff > 2) {
-        //Player attacks more than one opponent in a single move
-        List<Point> list = [];
-        List<Point> recList =
-            recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
-        if (list.length == 0) {
-          return false;
-        }
-        _zeroOutChips(recList);
-        return true;
-      }
+    //If player one just moves to a valid open spot
+    if (diff == 1) {
+      return true;
     }
-
-    if (player == 2) {
-      // If player moves to vaild open spot
-      if (diff == 1) {
-        return true;
+    //Player attacks a one jump.
+    if (diff == 2) {
+      return findAttackMove(oldX, oldY, newX, newY, player, opponent);
+    } else if (diff > 2) {
+      //Player attacks more than one opponent in a single move
+      List<Point> list = [];
+      List<Point> recList =
+          recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+      if (list.length == 0) {
+        return false;
       }
-
-      //Player attacks a one jump.
-      if (diff == 2) {
-        return findAttackMove(oldX, oldY, newX, newY, player, opponent);
-      } else if (diff > 2) {
-        //Player attacks more than one opponent in a single move
-        List<Point> list = [];
-        List<Point> recList =
-            recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
-        if (list.length == 0) {
-          return false;
-        }
-        _zeroOutChips(recList);
-        return true;
-      }
+      _zeroOutChips(recList);
+      return true;
     }
     return value;
   }
