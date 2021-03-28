@@ -41,6 +41,9 @@ class CheckModel {
 
   bool findAttackMove(int x, int y, int dx, int dy, int player, int opponent) {
     bool v = false;
+    if (y < 0 || y > 7) {
+      return false;
+    }
     if (player == 1) {
       if (y < dy && gridList[dx - 1][dy - 1] == opponent) {
         gridList[dx - 1][dy - 1] = 0;
@@ -64,9 +67,7 @@ class CheckModel {
 
   List<Point> recurseAttackMove(int x, int y, int dx, int dy, int player,
       int opponent, List<Point> list) {
-    print('X: $x, Y:$y, dx: $dx, dy: $dy, player: $player, op: $opponent');
-    if (x > 8 || x < 0 || y > 8 || y < 0) {
-      list.clear();
+    if (x > 7 || x < 0) {
       return list;
     }
     if (x == dx && y == dy) {
@@ -75,11 +76,9 @@ class CheckModel {
 
     if (player == 1) {
       if (findAttackMove(x + 2, y + 2, dx, dy, player, opponent)) {
-        print('X2: $x');
         list.add(Point(x + 1, y + 1));
         return recurseAttackMove(x + 2, y + 2, dx, dy, player, opponent, list);
       } else if (findAttackMove(x + 2, y - 2, dx, dy, player, opponent)) {
-        print('X1: $x');
         list.add(Point(x + 1, y - 1));
         return recurseAttackMove(x + 2, y - 2, dx, dy, player, opponent, list);
       }
@@ -112,15 +111,12 @@ class CheckModel {
       } else if (diff > 2) {
         //Player attacks more than one opponent in a single move
         List<Point> list = [];
-        recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+        List<Point> recList =
+            recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
         if (list.length == 0) {
           return false;
         }
-        print(list.length);
-        list.forEach((e) {
-          print('${e.x}, ${e.y}');
-          gridList[e.x][e.y] = 0;
-        });
+        _zeroOutChips(recList);
         return true;
       }
     }
@@ -137,19 +133,22 @@ class CheckModel {
       } else if (diff > 2) {
         //Player attacks more than one opponent in a single move
         List<Point> list = [];
-        recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+        List<Point> recList =
+            recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
         if (list.length == 0) {
           return false;
         }
-        print(list.length);
-        list.forEach((e) {
-          print('${e.x}, ${e.y}');
-          gridList[e.x][e.y] = 0;
-        });
+        _zeroOutChips(recList);
         return true;
       }
     }
     return value;
+  }
+
+  void _zeroOutChips(List<Point> list) {
+    list.forEach((e) {
+      gridList[e.x][e.y] = 0;
+    });
   }
 
 //Counts the remaining chips for each player
