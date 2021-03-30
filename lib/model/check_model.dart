@@ -39,7 +39,7 @@ class CheckModel {
     }
   }
 
-  bool findAttackMove(int x, int y, int dx, int dy, int player, int opponent) {
+  bool _findAttackMove(int x, int y, int dx, int dy, int player, int opponent) {
     bool v = false;
     if (y < 0 || y > 7) {
       return false;
@@ -65,7 +65,7 @@ class CheckModel {
     return v;
   }
 
-  List<Point> recurseAttackMove(int x, int y, int dx, int dy, int player,
+  List<Point> _recurseAttackMove(int x, int y, int dx, int dy, int player,
       int opponent, List<Point> list) {
     if (x > 7 || x < 0) {
       return list;
@@ -75,22 +75,22 @@ class CheckModel {
     }
 
     if (player == 1) {
-      if (findAttackMove(x + 2, y + 2, dx, dy, player, opponent)) {
+      if (_findAttackMove(x + 2, y + 2, dx, dy, player, opponent)) {
         list.add(Point(x + 1, y + 1));
-        return recurseAttackMove(x + 2, y + 2, dx, dy, player, opponent, list);
-      } else if (findAttackMove(x + 2, y - 2, dx, dy, player, opponent)) {
+        return _recurseAttackMove(x + 2, y + 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x + 2, y - 2, dx, dy, player, opponent)) {
         list.add(Point(x + 1, y - 1));
-        return recurseAttackMove(x + 2, y - 2, dx, dy, player, opponent, list);
+        return _recurseAttackMove(x + 2, y - 2, dx, dy, player, opponent, list);
       }
     }
 
     if (player == 2) {
-      if (findAttackMove(x - 2, y - 2, dx, dy, player, opponent)) {
+      if (_findAttackMove(x - 2, y - 2, dx, dy, player, opponent)) {
         list.add(Point(x - 1, y - 1));
-        return recurseAttackMove(x - 2, y - 2, dx, dy, player, opponent, list);
-      } else if (findAttackMove(x - 2, y + 2, dx, dy, player, opponent)) {
+        return _recurseAttackMove(x - 2, y - 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x - 2, y + 2, dx, dy, player, opponent)) {
         list.add(Point(x - 1, y + 1));
-        return recurseAttackMove(x - 2, y + 2, dx, dy, player, opponent, list);
+        return _recurseAttackMove(x - 2, y + 2, dx, dy, player, opponent, list);
       }
     }
     return list;
@@ -98,7 +98,7 @@ class CheckModel {
 
   bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
     bool value = false;
-    int opponent = player == 1 ? 2 : 1;
+    int opponent = player % 2 == 0 ? 1 : 2;
     int diff = (oldX - newX).abs();
     //If player one just moves to a valid open spot
     if (diff == 1) {
@@ -106,12 +106,12 @@ class CheckModel {
     }
     //Player attacks a one jump.
     if (diff == 2) {
-      return findAttackMove(oldX, oldY, newX, newY, player, opponent);
+      return _findAttackMove(oldX, oldY, newX, newY, player, opponent);
     } else if (diff > 2) {
       //Player attacks more than one opponent in a single move
       List<Point> list = [];
       List<Point> recList =
-          recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
+          _recurseAttackMove(oldX, oldY, newX, newY, player, opponent, list);
       if (list.length == 0) {
         return false;
       }
@@ -133,10 +133,10 @@ class CheckModel {
     List<int> counts = [0, 0];
     gridList.forEach((list) {
       list.forEach((element) {
-        if (element == 1) {
+        if (element == 1 || element == 3) {
           counts[0]++;
         }
-        if (element == 2) {
+        if (element == 2 || element == 4) {
           counts[1]++;
         }
       });

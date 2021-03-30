@@ -164,9 +164,11 @@ class _CheckersState extends State<Checkers> {
                 case SelectionState.waiting:
                   {
                     //If the selection is not the current player continue waiting
-                    if (_model.gridList[i][j] != _player) {
+                    int p = _player % 2 == 0 ? 2 : 1;
+                    if (_model.gridList[i][j] != p) {
                       break;
                     }
+
                     _currentSelectionX = i;
                     _currentSelectionY = j;
                     currentState = SelectionState.selected;
@@ -202,8 +204,17 @@ class _CheckersState extends State<Checkers> {
                     //Make the move and return to waiting.
                     _model.move(
                         _currentSelectionX, _currentSelectionY, i, j, _player);
+
+                    if (_player == 1 && i == 7) {
+                      _model.gridList[i][j] = 3;
+                    }
+                    if (_player == 2 && i == 0) {
+                      _model.gridList[i][j] = 4;
+                    }
+
                     currentState = SelectionState.waiting;
                     List<int> count = _model.countRemaining();
+                    //Check for a winner
                     if (count[0] == 0 || count[1] == 0) {
                       _opacity = 1.0;
                       setState(() {});
@@ -236,29 +247,29 @@ class _CheckersState extends State<Checkers> {
         children: list,
       ));
     }
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Color(0x99222222),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 10,
-                color: Color(0x99222222),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: PhysicalModel(
+        elevation: 7.0,
+        color: Colors.white60,
+        shadowColor: Color.lerp(Colors.grey.shade400, Colors.black, .6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 10,
+                  color: Color(0x99222222),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: rowList,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: rowList,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -317,7 +328,7 @@ class _CheckersState extends State<Checkers> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: player == 1
+                    color: player % 2 != 0
                         ? Colors.grey.shade900
                         : Color.lerp(Colors.grey.shade900, Colors.black, .6),
                     spreadRadius: 2.0,
@@ -325,11 +336,21 @@ class _CheckersState extends State<Checkers> {
                     offset: Offset(3.0, 6.0))
               ],
               border: Border.all(
-                color: player == 1 ? Colors.blue : Colors.white,
+                color: player % 2 != 0 ? Colors.blue : Colors.white,
                 width: 3,
               ),
               shape: BoxShape.circle,
-              color: player == 1 ? Color(0xFF443333) : Colors.red,
+              color: player % 2 != 0 ? Color(0xFF443333) : Colors.red,
+            ),
+            child: Center(
+              child: Container(
+                child: player > 2
+                    ? Text(
+                        '👑',
+                        style: TextStyle(fontSize: 15),
+                      )
+                    : null,
+              ),
             ),
           )
         : Container(
@@ -344,13 +365,23 @@ class _CheckersState extends State<Checkers> {
                     offset: Offset(3.0, 6.0))
               ],
               border: Border.all(
-                color: player == 1
+                color: player % 2 != 0
                     ? Color.lerp(Colors.white, Color(0xFF443333), .4)
                     : Colors.red.shade800,
                 width: 3,
               ),
               shape: BoxShape.circle,
-              color: player == 1 ? Color(0xFF443333) : Colors.red,
+              color: player % 2 != 0 ? Color(0xFF443333) : Colors.red,
+            ),
+            child: Center(
+              child: Container(
+                child: player > 2
+                    ? Text(
+                        '👑',
+                        style: TextStyle(fontSize: 20),
+                      )
+                    : null,
+              ),
             ),
           );
   }
