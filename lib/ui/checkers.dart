@@ -196,6 +196,7 @@ class _CheckersState extends State<Checkers> {
                     }
 
                     // Check if the move is not valid
+                    print(_player);
                     if (!_model.isMoveValid(_currentSelectionX,
                         _currentSelectionY, i, j, _player)) {
                       break;
