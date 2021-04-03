@@ -39,35 +39,76 @@ class CheckModel {
     }
   }
 
+  _removeChip(int x, int y) {
+    gridList[x][y] = 0;
+  }
+
   bool _findAttackMove(int x, int y, int dx, int dy, int player, int opponent) {
     bool v = false;
-    if (y < 0 || y > 7) {
+    if (y < 0 || y > 7 || x > 7 || x < 0) {
+      return false;
+    }
+    if (!(gridList[dx][dy] == 0)) {
       return false;
     }
     if (player == 1) {
-      if (y < dy && gridList[dx - 1][dy - 1] == opponent) {
-        gridList[dx - 1][dy - 1] = 0;
+      if (y < dy &&
+          (gridList[dx - 1][dy - 1] == opponent ||
+              gridList[dx - 1][dy - 1] == opponent + 2)) {
+        _removeChip(dx - 1, dy - 1);
         v = true;
-      } else if (y > dy && gridList[dx - 1][dy + 1] == opponent) {
-        gridList[dx - 1][dy + 1] = 0;
+      } else if (y > dy &&
+          (gridList[dx - 1][dy + 1] == opponent ||
+              gridList[dx - 1][dy + 1] == opponent + 2)) {
+        _removeChip(dx - 1, dy + 1);
         v = true;
       }
+      return v;
     }
     if (player == 2) {
-      if (y < dy && gridList[dx + 1][dy - 1] == opponent) {
-        gridList[dx + 1][dy - 1] = 0;
+      if (y < dy &&
+          (gridList[dx + 1][dy - 1] == opponent ||
+              gridList[dx + 1][dy - 1] == opponent + 2)) {
+        _removeChip(dx + 1, dy - 1);
         v = true;
-      } else if (y > dy && gridList[dx + 1][dy + 1] == opponent) {
-        gridList[dx + 1][dy + 1] = 0;
+      } else if (y > dy &&
+          (gridList[dx + 1][dy + 1] == opponent ||
+              gridList[dx + 1][dy + 1] == opponent + 2)) {
+        _removeChip(dx + 1, dy + 1);
         v = true;
       }
+      return v;
+    }
+    if (player > 2) {
+      if (y < dy &&
+          (gridList[dx - 1][dy - 1] == opponent ||
+              gridList[dx - 1][dy - 1] == opponent + 2)) {
+        _removeChip(dx - 1, dy - 1);
+        v = true;
+      } else if (y > dy &&
+          (gridList[dx - 1][dy + 1] == opponent ||
+              gridList[dx - 1][dy + 1] == opponent + 2)) {
+        _removeChip(dx - 1, dy + 1);
+        v = true;
+      } else if (y < dy &&
+          (gridList[dx + 1][dy - 1] == opponent ||
+              gridList[dx + 1][dy - 1] == opponent + 2)) {
+        _removeChip(dx + 1, dy - 1);
+        v = true;
+      } else if (y > dy &&
+          (gridList[dx + 1][dy + 1] == opponent ||
+              gridList[dx + 1][dy + 1] == opponent + 2)) {
+        _removeChip(dx + 1, dy + 1);
+        v = true;
+      }
+      return v;
     }
     return v;
   }
 
   List<Point> _recurseAttackMove(int x, int y, int dx, int dy, int player,
       int opponent, List<Point> list) {
-    if (x > 7 || x < 0) {
+    if (x > 8 || x < 0) {
       return list;
     }
     if (x == dx && y == dy) {
@@ -93,14 +134,40 @@ class CheckModel {
         return _recurseAttackMove(x - 2, y + 2, dx, dy, player, opponent, list);
       }
     }
+    if (player > 2) {
+      if (_findAttackMove(x + 2, y + 2, dx, dy, player, opponent)) {
+        list.add(Point(x + 1, y + 1));
+        return _recurseAttackMove(x + 2, y + 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x + 2, y - 2, dx, dy, player, opponent)) {
+        list.add(Point(x + 1, y - 1));
+        return _recurseAttackMove(x + 2, y - 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x - 2, y - 2, dx, dy, player, opponent)) {
+        list.add(Point(x - 1, y - 1));
+        return _recurseAttackMove(x - 2, y - 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x - 2, y + 2, dx, dy, player, opponent)) {
+        list.add(Point(x - 1, y + 1));
+        return _recurseAttackMove(x - 2, y + 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x, y + 2, dx, dy, player, opponent)) {
+        list.add(Point(x, y + 1));
+        return _recurseAttackMove(x, y + 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x, y - 2, dx, dy, player, opponent)) {
+        list.add(Point(x, y - 1));
+        return _recurseAttackMove(x, y - 2, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x - 2, y, dx, dy, player, opponent)) {
+        list.add(Point(x - 2, y));
+        return _recurseAttackMove(x - 2, y, dx, dy, player, opponent, list);
+      } else if (_findAttackMove(x + 2, y, dx, dy, player, opponent)) {
+        list.add(Point(x + 2, y));
+        return _recurseAttackMove(x + 2, y, dx, dy, player, opponent, list);
+      }
+    }
     return list;
   }
 
   bool isMoveValid(int oldX, int oldY, int newX, int newY, int player) {
-    bool value = false;
     int opponent = player % 2 == 0 ? 1 : 2;
     int diff = (oldX - newX).abs();
-    //If player one just moves to a valid open spot
+    //If player just moves to a valid open spot
     if (diff == 1) {
       return true;
     }
@@ -118,7 +185,7 @@ class CheckModel {
       _zeroOutChips(recList);
       return true;
     }
-    return value;
+    return false;
   }
 
   void _zeroOutChips(List<Point> list) {

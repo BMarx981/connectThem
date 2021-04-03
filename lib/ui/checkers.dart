@@ -164,8 +164,8 @@ class _CheckersState extends State<Checkers> {
                 case SelectionState.waiting:
                   {
                     //If the selection is not the current player continue waiting
-                    int p = _player % 2 == 0 ? 2 : 1;
-                    if (_model.gridList[i][j] != p) {
+                    // int p = _player % 2 == 0 ? 2 : 1;
+                    if (_model.gridList[i][j] % 2 != _player % 2) {
                       break;
                     }
 
@@ -196,16 +196,26 @@ class _CheckersState extends State<Checkers> {
                     }
 
                     // Check if the move is not valid
-                    print(_player);
-                    if (!_model.isMoveValid(_currentSelectionX,
-                        _currentSelectionY, i, j, _player)) {
+                    if (!_model.isMoveValid(
+                        _currentSelectionX,
+                        _currentSelectionY,
+                        i,
+                        j,
+                        _model.gridList[_currentSelectionX]
+                            [_currentSelectionY])) {
                       break;
                     }
 
                     //Make the move and return to waiting.
                     _model.move(
-                        _currentSelectionX, _currentSelectionY, i, j, _player);
+                        _currentSelectionX,
+                        _currentSelectionY,
+                        i,
+                        j,
+                        _model.gridList[_currentSelectionX]
+                            [_currentSelectionY]);
 
+                    //If the player has reached opponents end king them
                     if (_player == 1 && i == 7) {
                       _model.gridList[i][j] = 3;
                     }
