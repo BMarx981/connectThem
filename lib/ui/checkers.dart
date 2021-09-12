@@ -146,9 +146,9 @@ class _CheckersState extends State<Checkers> {
 
   Widget buildBoard() {
     Color offWhite = Color(0xFFCCCCCC);
-    List<Widget> rowList = List<Widget>();
+    List<Widget> rowList = [];
     for (int i = 0; i < 8; i++) {
-      List<Widget> list = List<Widget>();
+      List<Widget> list = [];
       Color firstColorOfRow = Colors.black;
       Color secondColorOfRow = offWhite;
       if (i % 2 != 0) {
@@ -264,10 +264,10 @@ class _CheckersState extends State<Checkers> {
   }
 
   Widget putChipsOnBoard() {
-    List<Widget> rowList = List<Widget>();
+    List<Widget> rowList = [];
 
     for (int i = 0; i < _model.gridList.length; i++) {
-      List<Widget> list = List<Widget>();
+      List<Widget> list = [];
       for (int j = 0; j < _model.gridList[i].length; j++) {
         if (i == _currentSelectionX && j == _currentSelectionY) {
           list.add(buildChip(_model.gridList[i][j], true));

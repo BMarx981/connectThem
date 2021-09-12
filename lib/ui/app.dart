@@ -170,9 +170,9 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
   }
 
   List<Widget> getColorChipContainers() {
-    List<Column> col = List<Column>();
+    List<Column> col = [];
     for (int i = 0; i < _model.colLists.length; i++) {
-      List<Widget> colors = List<Widget>();
+      List<Widget> colors = [];
       for (int j = 0; j < _model.colLists[i].length; j++) {
         colors.add(getChipPiece(_model.colLists[i][j]));
       }
@@ -199,9 +199,9 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
   }
 
   List<Widget> getDropChips() {
-    List<Column> chipCol = List<Column>();
+    List<Column> chipCol = [];
     for (int i = 0; i < _model.colLists.length; i++) {
-      List<Widget> colors = List<Widget>();
+      List<Widget> colors = [];
       for (int j = 0; j < _model.colLists[i].length; j++) {
         colors.add(
           getDropPiece(_colNum == i && _index == j
@@ -237,7 +237,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
 
   List<Widget> getGameBoardColumns() {
     int i = 1;
-    List<Widget> returningColumn = List<Widget>();
+    List<Widget> returningColumn = [];
     _model.colLists.forEach((column) {
       returningColumn.add(gameBoardColumn(i++, column));
     });
@@ -251,7 +251,7 @@ class _ConnectState extends State<Connect> with SingleTickerProviderStateMixin {
   }
 
   List<Widget> getBoardColumnButtons(int number, List<ChipColor> colors) {
-    List<Widget> returningList = List<Widget>();
+    List<Widget> returningList = [];
     colors.forEach((color) {
       returningList.add(columnButton(number, color));
     });
